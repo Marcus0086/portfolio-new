@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SIGNAL — Raghav Gupta's Portfolio
 
-## Getting Started
+A cyberpunk single-page portfolio. One thread runs through the whole page — the
+invisible signal from the remote-control cars I took apart as a kid — rendered
+as a scroll-progress rail, a noise-displaced wireframe sphere, and a journey
+section that draws itself as an animated `git log --graph --all` with my real
+commit SHAs.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 16** (App Router, `output: "export"` — fully static)
+- **Tailwind CSS v4** (CSS-first `@theme` tokens)
+- **@react-three/fiber + three** — hero sphere (GLSL simplex-noise displacement)
+- **Chakra Petch + JetBrains Mono** via `next/font`
+
+## Develop
+
+```sh
+bun install
+bun run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Build & deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+bun run build      # static site in ./out
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Deploy `out/` to any static host. For Vercel: import the repo, framework preset
+"Next.js" — the static export is detected automatically.
 
-## Learn More
+## Where things live
 
-To learn more about Next.js, take a look at the following resources:
+- `data/content.ts` — every word on the page: commits, works, timeline, contact.
+  Edit copy here, not in components.
+- `components/git-graph.tsx` — the journey graph. Commit rows are DOM; the rail
+  is one SVG computed from measured node positions (`offsetTop`/`offsetLeft`,
+  immune to entrance-animation transforms), redrawn on resize and font load.
+- `components/sentient-sphere.tsx` — the hero sphere, including the responsive
+  camera-fit that keeps it framed on portrait screens.
+- `app/globals.css` — design tokens (`--color-void`, `--color-cyan`,
+  `--color-magenta`, …), keyframes, grain + scanline overlays.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All motion respects `prefers-reduced-motion`.
