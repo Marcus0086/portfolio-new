@@ -29,7 +29,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${chakra.variable} ${jetbrains.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${chakra.variable} ${jetbrains.variable} antialiased`}
+    >
       <body>
         {children}
         <div className="noise-overlay" aria-hidden />

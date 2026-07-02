@@ -32,9 +32,19 @@ export function Philosophy() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-[300vh] motion-reduce:h-auto motion-reduce:py-24">
+    <section
+      ref={sectionRef}
+      className="relative h-[300vh] motion-reduce:h-auto motion-reduce:py-24"
+    >
       <div className="sticky top-0 flex h-screen flex-col justify-center gap-14 overflow-hidden motion-reduce:static motion-reduce:h-auto motion-reduce:overflow-visible">
-        <SectionHead eyebrow="04 — PHILOSOPHY" title={<>Stream of <em>Consciousness</em></>} />
+        <SectionHead
+          eyebrow="04 — PHILOSOPHY"
+          title={
+            <>
+              Stream of <em>Consciousness</em>
+            </>
+          }
+        />
         <div
           ref={trackRef}
           className="flex w-max items-center gap-[10vw] pl-[8vw] will-change-transform motion-reduce:w-auto motion-reduce:flex-col motion-reduce:items-start motion-reduce:gap-8 motion-reduce:px-6"
@@ -50,7 +60,7 @@ export function Philosophy() {
             </p>
           ))}
         </div>
-        <div className="mx-6 h-px bg-gradient-to-r from-transparent via-line-strong to-transparent md:mx-12" />
+        <div className="mx-6 h-px bg-linear-to-r from-transparent via-line-strong to-transparent md:mx-12" />
       </div>
     </section>
   );

@@ -25,7 +25,9 @@ export function Cursor() {
       pointer.y = e.clientY;
     };
     const onOver = (e: MouseEvent) => {
-      setOverLink(Boolean((e.target as Element | null)?.closest?.("a, button")));
+      setOverLink(
+        Boolean((e.target as Element | null)?.closest?.("a, button")),
+      );
     };
     addEventListener("mousemove", onMove, { passive: true });
     addEventListener("mouseover", onOver);
@@ -61,14 +63,14 @@ export function Cursor() {
       <div
         ref={dotRef}
         aria-hidden
-        className={`pointer-events-none fixed z-[10000] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-fg mix-blend-difference transition-transform duration-300 ${
+        className={`pointer-events-none fixed z-10000 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-fg mix-blend-difference transition-transform duration-300 ${
           overLink ? "scale-0" : "scale-[1.4]"
         }`}
       />
       <div
         ref={ringRef}
         aria-hidden
-        className={`pointer-events-none fixed z-[10000] h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-fg mix-blend-difference transition-transform duration-300 ${
+        className={`pointer-events-none fixed z-10000 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-fg mix-blend-difference transition-transform duration-300 ${
           overLink ? "scale-100" : "scale-0"
         }`}
       />

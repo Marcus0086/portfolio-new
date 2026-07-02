@@ -17,8 +17,12 @@ function Row({ items, reverse }: { items: string[]; reverse?: boolean }) {
     </span>
   );
   return (
-    <div className={`overflow-hidden border-t border-line py-10 ${reverse ? "border-b" : ""}`}>
-      <div className={`flex w-max ${reverse ? "animate-marquee-right" : "animate-marquee-left"}`}>
+    <div
+      className={`overflow-hidden border-t border-line py-10 ${reverse ? "border-b" : ""}`}
+    >
+      <div
+        className={`flex w-max ${reverse ? "animate-marquee-right" : "animate-marquee-left"}`}
+      >
         {seq("a")}
         {seq("b")}
       </div>
@@ -29,7 +33,14 @@ function Row({ items, reverse }: { items: string[]; reverse?: boolean }) {
 export function Marquee() {
   return (
     <section id="arsenal" className="scroll-mt-24 py-24">
-      <SectionHead eyebrow="06 — TECHNICAL ARSENAL" title={<>Tools of <em>Extraction</em></>} />
+      <SectionHead
+        eyebrow="06 — TECHNICAL ARSENAL"
+        title={
+          <>
+            Tools of <em>Extraction</em>
+          </>
+        }
+      />
       <Row items={marqueeA} />
       <Row items={marqueeB} reverse />
     </section>

@@ -87,7 +87,9 @@ export function GitGraph() {
   // each branch sweeps in when its commit row approaches the viewport.
   useEffect(() => {
     if (!geometry) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     const main = mainPathRef.current;
     if (reduced) {
       if (main) main.style.strokeDashoffset = "0";
@@ -102,7 +104,10 @@ export function GitGraph() {
       const section = sectionRef.current;
       if (section && main) {
         const rect = section.getBoundingClientRect();
-        const p = Math.min(1, Math.max(0, (innerHeight * 0.85 - rect.top) / rect.height));
+        const p = Math.min(
+          1,
+          Math.max(0, (innerHeight * 0.85 - rect.top) / rect.height),
+        );
         main.style.strokeDashoffset = String(1 - p);
       }
       for (const branch of geometry.branches) {
@@ -111,7 +116,9 @@ export function GitGraph() {
         if (node && node.getBoundingClientRect().top < innerHeight * 0.85) {
           drawn.add(branch.index);
           branchGroupRef.current
-            ?.querySelectorAll<SVGPathElement>(`[data-branch="${branch.index}"]`)
+            ?.querySelectorAll<SVGPathElement>(
+              `[data-branch="${branch.index}"]`,
+            )
             .forEach((p) => (p.style.strokeDashoffset = "0"));
         }
       }
@@ -129,9 +136,23 @@ export function GitGraph() {
   };
 
   return (
-    <section ref={sectionRef} id="origin" className="scroll-mt-24 px-0 pt-32 pb-8">
-      <SectionHead eyebrow="03 — ORIGIN" title={<>git log <em>--graph --all</em></>} />
-      <div ref={listRef} className="relative mx-auto flex max-w-[880px] flex-col px-6 md:px-12">
+    <section
+      ref={sectionRef}
+      id="origin"
+      className="scroll-mt-24 px-0 pt-32 pb-8"
+    >
+      <SectionHead
+        eyebrow="03 — ORIGIN"
+        title={
+          <>
+            git log <em>--graph --all</em>
+          </>
+        }
+      />
+      <div
+        ref={listRef}
+        className="relative mx-auto flex max-w-[880px] flex-col px-6 md:px-12"
+      >
         {geometry && (
           <svg
             aria-hidden
@@ -174,7 +195,10 @@ export function GitGraph() {
         )}
 
         {commits.map((commit, index) => (
-          <Reveal key={commit.sha} className="relative z-[1] grid grid-cols-[64px_1fr] gap-x-4 pb-14">
+          <Reveal
+            key={commit.sha}
+            className="relative z-1 grid grid-cols-[64px_1fr] gap-x-4 pb-14"
+          >
             <div className="relative">
               <div
                 ref={(el) => {
@@ -196,7 +220,11 @@ export function GitGraph() {
               <p className="mt-3 mb-3 flex flex-wrap items-center gap-2.5 font-mono text-xs tracking-[0.06em]">
                 <span
                   className={`text-[11px] tracking-[0.12em] ${
-                    commit.pre ? "text-muted" : commit.side ? "text-magenta" : "text-cyan"
+                    commit.pre
+                      ? "text-muted"
+                      : commit.side
+                        ? "text-magenta"
+                        : "text-cyan"
                   }`}
                 >
                   {commit.sha}
@@ -204,14 +232,18 @@ export function GitGraph() {
                 {commit.branch && (
                   <span
                     className={`rounded-[3px] border px-2 py-0.5 text-[9px] tracking-[0.2em] uppercase ${
-                      commit.head ? "border-cyan text-cyan" : "border-magenta text-magenta"
+                      commit.head
+                        ? "border-cyan text-cyan"
+                        : "border-magenta text-magenta"
                     }`}
                   >
                     {commit.branch}
                   </span>
                 )}
                 <span className="text-fg">{commit.msg}</span>
-                <span className="text-[9px] tracking-[0.25em] text-muted">{commit.year}</span>
+                <span className="text-[9px] tracking-[0.25em] text-muted">
+                  {commit.year}
+                </span>
               </p>
               <p className="max-w-[62ch] text-[clamp(1rem,1.6vw,1.2rem)] leading-[1.75] font-light">
                 {commit.prose}

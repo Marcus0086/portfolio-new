@@ -1,6 +1,12 @@
 import { Reveal } from "@/hooks/use-reveal";
 
-export function SectionHead({ eyebrow, title }: { eyebrow: string; title: React.ReactNode }) {
+export function SectionHead({
+  eyebrow,
+  title,
+}: {
+  eyebrow: string;
+  title: React.ReactNode;
+}) {
   return (
     <Reveal className="mb-14 px-6 md:px-12">
       <p className="font-mono text-[10px] tracking-[0.3em] text-muted uppercase">
@@ -10,7 +16,9 @@ export function SectionHead({ eyebrow, title }: { eyebrow: string; title: React.
         />
         {eyebrow}
       </p>
-      <h2 className="mt-4 text-[clamp(1.5rem,3vw,2.4rem)] font-medium italic">{title}</h2>
+      <h2 className="mt-4 text-[clamp(1.5rem,3vw,2.4rem)] font-medium italic">
+        {title}
+      </h2>
     </Reveal>
   );
 }

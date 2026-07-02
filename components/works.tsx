@@ -39,8 +39,18 @@ export function Works() {
 
   return (
     <section id="works" className="relative scroll-mt-24 py-32">
-      <SectionHead eyebrow="05 — SELECTED WORKS" title={<>The <em>Distortion</em> Gallery</>} />
-      <div className="border-b border-line" onMouseLeave={() => setHovered(null)}>
+      <SectionHead
+        eyebrow="05 — SELECTED WORKS"
+        title={
+          <>
+            The <em>Distortion</em> Gallery
+          </>
+        }
+      />
+      <div
+        className="border-b border-line"
+        onMouseLeave={() => setHovered(null)}
+      >
         {works.map((work, index) => (
           <Reveal key={work.title} delay={index * 100}>
             <a
@@ -48,16 +58,16 @@ export function Works() {
               target="_blank"
               rel="noopener noreferrer"
               onMouseEnter={() => setHovered(index)}
-              className="group relative grid grid-cols-[1fr_auto] gap-x-4 gap-y-2.5 border-t border-line px-6 py-8 transition-colors duration-300 [grid-template-areas:'year_arrow'_'title_title'_'tags_tags'] hover:bg-fg/[0.03] md:grid-cols-[7rem_1fr_auto_3rem] md:items-center md:gap-6 md:px-12 md:py-10 md:[grid-template-areas:'year_title_tags_arrow']"
+              className="group relative grid grid-cols-[1fr_auto] gap-x-4 gap-y-2.5 border-t border-line px-6 py-8 transition-colors duration-300 [grid-template-areas:'year_arrow'_'title_title'_'tags_tags'] hover:bg-fg/3 md:grid-cols-[7rem_1fr_auto_3rem] md:items-center md:gap-6 md:px-12 md:py-10 md:[grid-template-areas:'year_title_tags_arrow']"
             >
               <span
                 aria-hidden
-                className="absolute top-0 bottom-0 left-0 w-0.5 origin-top scale-y-0 bg-cyan shadow-[0_0_12px_var(--color-cyan)] transition-transform duration-[350ms] ease-house group-hover:scale-y-100"
+                className="absolute top-0 bottom-0 left-0 w-0.5 origin-top scale-y-0 bg-cyan shadow-[0_0_12px_var(--color-cyan)] transition-transform duration-350 ease-house group-hover:scale-y-100"
               />
               <span className="self-center font-mono text-[11px] tracking-[0.15em] text-muted [grid-area:year]">
                 {work.year}
               </span>
-              <span className="text-[clamp(1.5rem,3.8vw,3.2rem)] leading-none font-medium transition-[transform,text-shadow] duration-[350ms] ease-house [grid-area:title] group-hover:translate-x-4 group-hover:[text-shadow:0_0_18px_rgba(0,229,255,0.6)]">
+              <span className="text-[clamp(1.5rem,3.8vw,3.2rem)] leading-none font-medium transition-[transform,text-shadow] duration-350 ease-house [grid-area:title] group-hover:translate-x-4 group-hover:[text-shadow:0_0_18px_rgba(0,229,255,0.6)]">
                 {work.title}
               </span>
               <span className="flex flex-wrap items-center gap-2 [grid-area:tags] md:justify-end">
@@ -65,7 +75,9 @@ export function Works() {
                   <span
                     key={tag.label}
                     className={`rounded-full border px-3 py-1.5 font-mono text-[9px] tracking-[0.15em] whitespace-nowrap ${
-                      tag.live ? "border-magenta text-magenta" : "border-line text-muted"
+                      tag.live
+                        ? "border-magenta text-magenta"
+                        : "border-line text-muted"
                     }`}
                   >
                     {tag.label}
@@ -74,7 +86,7 @@ export function Works() {
               </span>
               <span
                 aria-hidden
-                className="self-center font-mono text-xl text-muted transition-[transform,color] duration-[350ms] [grid-area:arrow] group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-cyan"
+                className="self-center font-mono text-xl text-muted transition-[transform,color] duration-350 [grid-area:arrow] group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-cyan"
               >
                 ↗
               </span>
@@ -87,7 +99,7 @@ export function Works() {
       <div
         ref={previewRef}
         aria-hidden
-        className={`pointer-events-none fixed z-[90] hidden h-[190px] w-[300px] -translate-x-1/2 -translate-y-[130%] flex-col justify-between border border-line-strong p-5 backdrop-blur-sm transition-[opacity,transform] duration-250 md:flex ${
+        className={`pointer-events-none fixed z-90 hidden h-[190px] w-[300px] -translate-x-1/2 translate-y-[-130%] flex-col justify-between border border-line-strong p-5 backdrop-blur-sm transition-[opacity,transform] duration-250 md:flex ${
           hovered !== null ? "scale-100 opacity-100" : "scale-90 opacity-0"
         }`}
         style={{
@@ -98,7 +110,9 @@ export function Works() {
         <span className="font-mono text-[34px] text-fg/85">
           {String((hovered ?? 0) + 1).padStart(2, "0")}
         </span>
-        <span className="font-mono text-[9px] tracking-[0.3em] text-muted">OPEN FILE ↗</span>
+        <span className="font-mono text-[9px] tracking-[0.3em] text-muted">
+          OPEN FILE ↗
+        </span>
       </div>
     </section>
   );

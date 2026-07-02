@@ -112,8 +112,16 @@ function Sphere() {
     if (materialRef.current) materialRef.current.uniforms.uTime.value += delta;
     if (meshRef.current) {
       meshRef.current.rotation.y += delta * 0.05;
-      meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, pointer.y * 0.2, 0.05);
-      meshRef.current.rotation.z = THREE.MathUtils.lerp(meshRef.current.rotation.z, pointer.x * 0.2, 0.05);
+      meshRef.current.rotation.x = THREE.MathUtils.lerp(
+        meshRef.current.rotation.x,
+        pointer.y * 0.2,
+        0.05,
+      );
+      meshRef.current.rotation.z = THREE.MathUtils.lerp(
+        meshRef.current.rotation.z,
+        pointer.x * 0.2,
+        0.05,
+      );
     }
   });
 

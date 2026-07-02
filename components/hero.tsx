@@ -27,14 +27,16 @@ export function Hero() {
         contentRef.current.style.opacity = String(1 - p);
         contentRef.current.style.transform = `scale(${1 - p * 0.2})`;
       }
-      if (extrasRef.current) extrasRef.current.style.opacity = String(1 - p * 1.6);
+      if (extrasRef.current)
+        extrasRef.current.style.opacity = String(1 - p * 1.6);
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  const title = "text-fg text-[clamp(2.1rem,5.5vw,4.75rem)] leading-[1.05] font-semibold tracking-[0.01em]";
+  const title =
+    "text-fg text-[clamp(2.1rem,5.5vw,4.75rem)] leading-[1.05] font-semibold tracking-[0.01em]";
 
   return (
     <section className="relative h-screen overflow-clip">
@@ -44,7 +46,7 @@ export function Hero() {
 
       <div
         ref={contentRef}
-        className="pointer-events-none absolute inset-0 z-[2] flex flex-col justify-between px-6 pt-24 pb-30 md:px-12 md:pt-28 md:pb-32"
+        className="pointer-events-none absolute inset-0 z-2 flex flex-col justify-between px-6 pt-24 pb-30 md:px-12 md:pt-28 md:pb-32"
       >
         <div className="animate-rise [animation-delay:200ms]">
           <Eyebrow>01 — DISCIPLINE</Eyebrow>
@@ -63,14 +65,22 @@ export function Hero() {
       <div ref={extrasRef} className="contents">
         <a
           href="#works"
-          className="animate-pop absolute top-1/2 left-1/2 z-[3] flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-2.5 rounded-full border border-line-strong font-mono text-[10px] tracking-[0.3em] text-fg shadow-[0_0_24px_rgba(0,229,255,0.2),inset_0_0_14px_rgba(0,229,255,0.12)] transition-[border-color,box-shadow] duration-300 [animation-delay:600ms] hover:border-magenta hover:shadow-[0_0_28px_rgba(255,46,136,0.35),inset_0_0_14px_rgba(255,46,136,0.18)]"
+          className="animate-pop absolute top-1/2 left-1/2 z-3 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-2.5 rounded-full border border-line-strong font-mono text-[10px] tracking-[0.3em] text-fg shadow-[0_0_24px_rgba(0,229,255,0.2),inset_0_0_14px_rgba(0,229,255,0.12)] transition-[border-color,box-shadow] duration-300 [animation-delay:600ms] hover:border-magenta hover:shadow-[0_0_28px_rgba(255,46,136,0.35),inset_0_0_14px_rgba(255,46,136,0.18)]"
         >
-          <span className="animate-ping-node h-1.5 w-1.5 rounded-full bg-cyan" aria-hidden />
+          <span
+            className="animate-ping-node h-1.5 w-1.5 rounded-full bg-cyan"
+            aria-hidden
+          />
           INITIALIZE
         </a>
-        <div className="animate-fade absolute bottom-6 left-1/2 z-[3] flex -translate-x-1/2 flex-col items-center gap-2.5 [animation-delay:1500ms]">
-          <span className="font-mono text-[9px] tracking-[0.3em] text-muted">SCROLL</span>
-          <span className="animate-bounce-line h-12 w-px bg-gradient-to-b from-fg to-transparent" aria-hidden />
+        <div className="animate-fade absolute bottom-6 left-1/2 z-3 flex -translate-x-1/2 flex-col items-center gap-2.5 [animation-delay:1500ms]">
+          <span className="font-mono text-[9px] tracking-[0.3em] text-muted">
+            SCROLL
+          </span>
+          <span
+            className="animate-bounce-line h-12 w-px bg-linear-to-b from-fg to-transparent"
+            aria-hidden
+          />
         </div>
       </div>
     </section>

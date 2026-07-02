@@ -23,7 +23,10 @@ export function SignalRail() {
   }, []);
 
   return (
-    <div aria-hidden className="fixed top-0 bottom-0 left-6 z-[150] hidden w-0.5 bg-line md:block">
+    <div
+      aria-hidden
+      className="fixed top-0 bottom-0 left-6 z-150 hidden w-0.5 bg-line md:block"
+    >
       <div
         ref={fillRef}
         className="w-full bg-cyan shadow-[0_0_10px_rgba(0,229,255,0.4)]"

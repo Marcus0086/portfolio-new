@@ -20,13 +20,17 @@ export function Nav() {
 
   return (
     <header
-      className={`animate-nav-down fixed inset-x-0 top-0 z-[200] flex items-center justify-between border-b px-8 py-5 transition-colors duration-300 ${
-        scrolled ? "border-line bg-void/80 backdrop-blur-md" : "border-transparent"
+      className={`animate-nav-down fixed inset-x-0 top-0 z-200 flex items-center justify-between border-b px-8 py-5 transition-colors duration-300 ${
+        scrolled
+          ? "border-line bg-void/80 backdrop-blur-md"
+          : "border-transparent"
       }`}
     >
       <div className="flex items-center gap-2.5">
         <span className="h-2 w-2 rounded-full bg-cyan" aria-hidden />
-        <span className="font-mono text-[11px] tracking-[0.2em]">RAGHAV GUPTA</span>
+        <span className="font-mono text-[11px] tracking-[0.2em]">
+          RAGHAV GUPTA
+        </span>
       </div>
       <nav className="hidden gap-8 md:flex">
         {links.map((l) => (
@@ -42,7 +46,10 @@ export function Nav() {
         ))}
       </nav>
       <div className="hidden items-center gap-2.5 font-mono text-[10px] tracking-[0.2em] text-muted md:flex">
-        <span className="animate-ping-node h-1.5 w-1.5 rounded-full bg-cyan" aria-hidden />
+        <span
+          className="animate-ping-node h-1.5 w-1.5 rounded-full bg-cyan"
+          aria-hidden
+        />
         AVAILABLE FOR WORK
       </div>
     </header>

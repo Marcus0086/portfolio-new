@@ -34,17 +34,20 @@ export function Footer() {
           08 — TRANSMISSION
         </p>
       </Reveal>
-      <a href={`mailto:${contact.email}`} className="group relative mt-6 block overflow-hidden px-6 py-20 text-center">
+      <a
+        href={`mailto:${contact.email}`}
+        className="group relative mt-6 block overflow-hidden px-6 py-20 text-center"
+      >
         <span
           aria-hidden
-          className="absolute inset-0 translate-y-[101%] bg-gradient-to-r from-cyan to-magenta transition-transform duration-500 ease-house group-hover:translate-y-0"
+          className="absolute inset-0 translate-y-[101%] bg-linear-to-r from-cyan to-magenta transition-transform duration-500 ease-house group-hover:translate-y-0"
         />
-        <span className="relative z-[1] text-[clamp(2.2rem,7vw,6rem)] leading-[1.05] font-semibold transition-colors duration-[400ms] group-hover:text-void">
+        <span className="relative z-1 text-[clamp(2.2rem,7vw,6rem)] leading-[1.05] font-semibold transition-colors duration-400 group-hover:text-void">
           Let’s <em>Collaborate</em>
         </span>
         <span
           aria-hidden
-          className="relative z-[1] ml-4 inline-block text-[clamp(1.8rem,4vw,3.5rem)] text-cyan transition-[transform,color] duration-[400ms] group-hover:rotate-45 group-hover:text-void"
+          className="relative z-1 ml-4 inline-block text-[clamp(1.8rem,4vw,3.5rem)] text-cyan transition-[transform,color] duration-400 group-hover:rotate-45 group-hover:text-void"
         >
           ↗
         </span>
