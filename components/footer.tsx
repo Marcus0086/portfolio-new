@@ -31,7 +31,7 @@ export function Footer() {
             aria-hidden
             className="mr-2.5 inline-block h-2 w-2 rounded-full border-2 border-cyan align-middle shadow-[0_0_8px_rgba(0,229,255,0.6)]"
           />
-          08 — TRANSMISSION
+          09 — TRANSMISSION
         </p>
       </Reveal>
       <a

@@ -1,6 +1,8 @@
 // Single source of truth for all portfolio copy.
 // Commit SHAs are real — latest short SHAs from the referenced repos.
 
+export const siteUrl = "https://portfolio-new.vercel.app";
+
 export type Commit = {
   sha: string;
   side?: boolean;
@@ -126,6 +128,30 @@ export const works: Work[] = [
     ],
   },
 ];
+
+export type StoryBeat = { title: string; body: string };
+
+export const story = {
+  lead: "Everything I have built started with a message from a stranger.",
+  beats: [
+    {
+      title: "A stranger, a Starbucks, and a dream",
+      body: "In late 2024 I left Tars with no plan, just a Reddit thread asking if anyone needed an engineer. A founder from South Africa messaged me out of nowhere and said he wanted to build something. I was skeptical, but I gave him my number, and for two months I woke in the middle of the night to talk across timezones and build small things with him. In December we finally sat down at a Starbucks in Indiranagar, Bangalore, and sketched a dream: help product teams build products that people actually love.",
+    },
+    {
+      title: "Teaching software to think like a user",
+      body: "The first problem nearly broke us. We tried to turn a Figma design into a map of every path a user could take, and it fought us at every step. So I asked a different question. What if software could just try the flow itself, the way a real person would, and what if hundreds of different people, each with their own habits and frustrations, all tried it at once? That became Featurely. The first version was scrappy and beautiful to me, a lone agent fumbling through a webpage while we watched it live and held our breath. I took on Head of Engineering, hired our first engineers and interns, and lived between that Starbucks and a WeWork on Church Street, forgetting to eat, forgetting to drink, locking myself in a room until it worked.",
+    },
+    {
+      title: "The night I rebuilt everything to scale",
+      body: "Then it would not scale. One browser per user buckled the moment real usage arrived. I called my teammate late one night and rebuilt the entire architecture before morning, reverse-engineering open tools nobody had bothered to document and fighting cloud limits through more than thirty failed attempts, until a thousand synthetic users could explore a thousand products at the same time. When it finally held, I just sat there, wrecked and grinning.",
+    },
+    {
+      title: "What two years as a founding engineer taught me",
+      body: "Quality was the next mountain, so I read about how people think, fast and slow, and taught the system to pause and choose its next move the way a human would. I have lived every season of this company. Three generations of engineers. People I hired, guided, and had to let go. I have been messy, I have been wrong, and I stepped back from managing so I could build again, because building is the thing I love most. As a kid I took apart remote-control cars to find the invisible signal that made them move. I am still chasing that signal, only now it lives in software that watches how people move. I am the first engineer who fueled Featurely into the living codebase it is today, and I am not done.",
+    },
+  ] satisfies StoryBeat[],
+};
 
 export const statements: { text: string; ghost?: boolean }[] = [
   { text: "What is actually happening underneath?" },

@@ -2,6 +2,7 @@ import { Nav } from "@/components/nav";
 import { Hero } from "@/components/hero";
 import { GitGraph } from "@/components/git-graph";
 import { Philosophy } from "@/components/philosophy";
+import { Story } from "@/components/story";
 import { Works } from "@/components/works";
 import { Marquee } from "@/components/marquee";
 import { Timeline } from "@/components/timeline";
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <GitGraph />
       <Philosophy />
+      <Story />
       <Works />
       <Marquee />
       <Timeline />

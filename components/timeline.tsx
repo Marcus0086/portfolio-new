@@ -6,7 +6,7 @@ export function Timeline() {
   return (
     <section id="timeline" className="scroll-mt-24 py-24">
       <SectionHead
-        eyebrow="07 — TIMELINE"
+        eyebrow="08 — TIMELINE"
         title={
           <>
             The <em>Chronology</em>

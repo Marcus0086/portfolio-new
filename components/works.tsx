@@ -40,7 +40,7 @@ export function Works() {
   return (
     <section id="works" className="relative scroll-mt-24 py-32">
       <SectionHead
-        eyebrow="05 — SELECTED WORKS"
+        eyebrow="06 — SELECTED WORKS"
         title={
           <>
             The <em>Distortion</em> Gallery
