@@ -12,7 +12,7 @@ Everything I have built started with a message from a stranger.
 
 ### A stranger, a Starbucks, and a dream
 
-In late 2024 I left Tars with no plan, just a Reddit thread asking if anyone needed an engineer. A founder from South Africa messaged me out of nowhere and said he wanted to build something. I was skeptical, but I gave him my number, and for two months I woke in the middle of the night to talk across timezones and build small things with him. In December we finally sat down at a Starbucks in Indiranagar, Bangalore, and sketched a dream: help product teams build products that people actually love.
+In late 2024 I left Tars with no plan, just a Reddit thread asking if anyone needed an engineer. A founder from San Francisco messaged me out of nowhere and said he wanted to build something. I was skeptical, but I gave him my number, and for two months I woke in the middle of the night to talk across timezones and build small things with him. In December we finally sat down at a Starbucks in Indiranagar, Bangalore, and sketched a dream: help product teams build products that people actually love.
 
 ### Teaching software to think like a user
 

@@ -33,6 +33,8 @@ export const metadata: Metadata = {
     "synthetic users",
     "usability testing",
     "distributed systems",
+    "MCP",
+    "agent skills",
     "Featurely",
     "FastAPI",
     "Python",
@@ -72,6 +74,8 @@ const personJsonLd = {
   sameAs: [contact.linkedin, contact.github],
   knowsAbout: [
     "AI agents",
+    "MCP",
+    "agent skills",
     "synthetic users",
     "usability testing",
     "distributed systems",
