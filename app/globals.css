@@ -139,3 +139,201 @@ body {
     animation: none;
   }
 }
+
+/* Atomic runtime observatory */
+.atomic-page {
+  --atomic-panel: color-mix(in srgb, var(--color-void) 88%, var(--color-cyan) 12%);
+  --atomic-panel-strong: color-mix(in srgb, var(--color-void) 82%, var(--color-magenta) 18%);
+  background:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px),
+    var(--color-void);
+  background-size: 44px 44px;
+}
+
+.atomic-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 68px;
+  padding: 0 3rem;
+  border-bottom: 1px solid var(--color-line-strong);
+  background: color-mix(in srgb, var(--color-void) 88%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.atomic-wordmark,
+.atomic-route-tabs,
+.atomic-route-tabs a,
+.atomic-eyebrow,
+.atomic-filterbar,
+.atomic-lab-footer,
+.atomic-state-row,
+.atomic-field span,
+.atomic-timeline-label,
+.atomic-trace-stage header {
+  font-family: var(--font-jetbrains);
+  letter-spacing: 0;
+}
+
+.atomic-wordmark { display: flex; align-items: center; gap: .7rem; font-size: .72rem; }
+.atomic-signal-dot { width: 8px; height: 8px; background: var(--color-cyan); box-shadow: 0 0 16px var(--color-cyan); }
+.atomic-route-tabs { display: flex; align-items: stretch; align-self: stretch; }
+.atomic-route-tabs a { display: grid; place-items: center; padding: 0 1rem; border-left: 1px solid var(--color-line); color: var(--color-muted); font-size: .67rem; }
+.atomic-route-tabs a:hover,
+.atomic-route-tabs a[data-active="true"] { color: var(--color-fg); background: color-mix(in srgb, var(--color-cyan) 9%, transparent); }
+
+.atomic-hero { padding: clamp(5rem, 9vw, 9rem) 3rem 3rem; border-bottom: 1px solid var(--color-line-strong); }
+.atomic-eyebrow { margin-bottom: 1rem; color: var(--color-cyan); font-size: .68rem; }
+.atomic-hero h1 { max-width: 980px; font-size: clamp(2.6rem, 7vw, 7rem); line-height: .94; font-weight: 500; }
+.atomic-intro { max-width: 760px; margin-top: 1.8rem; color: var(--color-muted); font-size: clamp(1rem, 1.5vw, 1.25rem); line-height: 1.65; }
+
+.atomic-trace { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 3rem; border-right: 1px solid var(--color-line-strong); border-bottom: 1px solid var(--color-line-strong); }
+.atomic-trace-stage { position: relative; min-width: 0; min-height: 150px; padding: 1.25rem; border-left: 1px solid var(--color-line-strong); background: color-mix(in srgb, var(--color-void) 92%, transparent); }
+.atomic-trace-stage header { display: flex; justify-content: space-between; gap: .5rem; color: var(--color-muted); font-size: .58rem; }
+.atomic-trace-stage header span:last-child { text-align: right; }
+.atomic-trace-stage strong { display: block; margin-top: 2rem; overflow-wrap: anywhere; color: var(--color-fg); font-family: var(--font-jetbrains); font-size: .75rem; font-weight: 500; }
+.atomic-trace-arrow { position: absolute; right: -9px; top: 50%; z-index: 2; display: grid; place-items: center; width: 18px; height: 18px; color: var(--color-cyan); background: var(--color-void); }
+
+.atomic-filterbar { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: 2rem 3rem 1rem; padding: .7rem; border: 1px solid var(--color-line-strong); background: color-mix(in srgb, var(--color-void) 90%, transparent); }
+.atomic-filterbar > span { margin: 0 .8rem; color: var(--color-muted); font-size: .64rem; }
+.atomic-filterbar button { border-radius: 0 !important; }
+
+.atomic-masonry { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-flow: dense; align-items: start; gap: 1rem; padding: 0 3rem; }
+.atomic-lab { grid-column: span 4; min-width: 0; border: 1px solid var(--color-line-strong); background: var(--atomic-panel); }
+.atomic-lab-wide { grid-column: span 8; }
+.atomic-lab-tall { min-height: 490px; }
+.atomic-lab-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding: 1.25rem 1.25rem 0; }
+.atomic-lab-header > span:first-child { min-width: 0; }
+.atomic-lab-header small { display: block; color: var(--color-cyan); font-family: var(--font-jetbrains); font-size: .58rem; }
+.atomic-lab-header h2 { margin-top: .35rem; font-size: clamp(1.25rem, 2vw, 1.8rem); font-weight: 500; }
+.atomic-lab-header [class*="Badge"] { border-radius: 0; }
+.atomic-lab-summary { min-height: 4.5rem; padding: .75rem 1.25rem 1.25rem; color: var(--color-muted); font-size: .9rem; line-height: 1.55; }
+.atomic-lab-body { display: grid; gap: .8rem; padding: 1.25rem; border-top: 1px solid var(--color-line); }
+.atomic-lab-body button { width: fit-content; border-radius: 0 !important; }
+.atomic-lab-footer { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 1.25rem; border-top: 1px solid var(--color-line); color: var(--color-muted); font-size: .6rem; }
+.atomic-lab-footer a { color: var(--color-cyan); }
+
+.atomic-state-row { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 1rem; margin: 0; padding-bottom: .7rem; border-bottom: 1px solid var(--color-line); font-size: .7rem; }
+.atomic-state-row span { color: var(--color-muted); }
+.atomic-state-row strong { overflow-wrap: anywhere; font-weight: 500; }
+.atomic-state-row[data-tone="cyan"] strong { color: var(--color-cyan); }
+.atomic-state-row[data-tone="pink"] strong { color: var(--color-magenta); }
+.atomic-field { display: grid; gap: .5rem; }
+.atomic-field span { color: var(--color-muted); font-size: .65rem; }
+.atomic-field textarea { width: 100%; resize: vertical; border: 1px solid var(--color-line-strong); border-radius: 0; padding: .8rem; color: var(--color-fg); background: var(--color-void); font-family: var(--font-jetbrains); font-size: .72rem; outline: none; }
+.atomic-field textarea:focus { border-color: var(--color-cyan); box-shadow: 0 0 0 1px var(--color-cyan); }
+.atomic-callout { border-left: 2px solid var(--color-magenta); padding: .8rem; color: var(--color-muted); background: var(--atomic-panel-strong); font-size: .78rem; line-height: 1.5; }
+.atomic-stepper,
+.atomic-layer-list,
+.atomic-lease-lanes,
+.atomic-code-flow { display: grid; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+.atomic-stepper { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.atomic-stepper li { padding: .7rem .3rem; border: 1px solid var(--color-line); color: var(--color-muted); text-align: center; font-family: var(--font-jetbrains); font-size: .58rem; }
+.atomic-stepper li[data-active="true"] { border-color: var(--color-cyan); color: var(--color-void); background: var(--color-cyan); }
+.atomic-layer-list li,
+.atomic-lease-lanes li { display: flex; justify-content: space-between; gap: 1rem; padding: .75rem; border: 1px solid var(--color-line); font-family: var(--font-jetbrains); font-size: .67rem; }
+.atomic-layer-list li[data-hit="true"] { border-color: var(--color-cyan); background: color-mix(in srgb, var(--color-cyan) 8%, transparent); }
+.atomic-layer-list strong,
+.atomic-lease-lanes strong { overflow-wrap: anywhere; text-align: right; font-weight: 500; }
+.atomic-timeline-label { color: var(--color-cyan); font-size: .68rem; }
+.atomic-code-flow { counter-reset: flow; }
+.atomic-code-flow li { position: relative; padding: .75rem .75rem .75rem 2.6rem; border-left: 1px solid var(--color-cyan); background: color-mix(in srgb, var(--color-cyan) 7%, transparent); font-family: var(--font-jetbrains); font-size: .67rem; overflow-wrap: anywhere; }
+.atomic-code-flow li::before { counter-increment: flow; content: "0" counter(flow); position: absolute; left: .65rem; color: var(--color-muted); }
+.atomic-button-row { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; }
+
+@media (max-width: 1000px) {
+  .atomic-trace { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .atomic-trace-stage:nth-child(3) { border-top: 1px solid var(--color-line-strong); }
+  .atomic-trace-stage:nth-child(4) { border-top: 1px solid var(--color-line-strong); }
+  .atomic-lab { grid-column: span 6; }
+  .atomic-lab-wide { grid-column: span 12; }
+}
+
+@media (max-width: 640px) {
+  .atomic-topbar { align-items: flex-start; flex-direction: column; padding: 1rem; }
+  .atomic-route-tabs { width: 100%; border-top: 1px solid var(--color-line); }
+  .atomic-route-tabs a { flex: 1; min-height: 42px; border-left: 0; border-right: 1px solid var(--color-line); }
+  .atomic-hero { padding: 4.5rem 1rem 2rem; }
+  .atomic-trace { grid-template-columns: 1fr; margin: 0 1rem; }
+  .atomic-trace-stage { min-height: 120px; border-top: 1px solid var(--color-line-strong); }
+  .atomic-trace-stage:first-child { border-top: 0; }
+  .atomic-trace-arrow { right: 50%; top: auto; bottom: -9px; transform: rotate(90deg); }
+  .atomic-filterbar { margin: 1rem; }
+  .atomic-filterbar > span { width: 100%; margin: .25rem; }
+  .atomic-masonry { grid-template-columns: 1fr; padding: 0 1rem; }
+  .atomic-lab,
+  .atomic-lab-wide { grid-column: 1; }
+  .atomic-lab-tall { min-height: 0; }
+  .atomic-lab-summary { min-height: 0; }
+  .atomic-state-row { grid-template-columns: 6.5rem minmax(0, 1fr); }
+  .atomic-stepper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .atomic-lab-footer { align-items: flex-start; flex-direction: column; }
+}
+
+/* Atomic documentation */
+.atomic-docs-layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 3rem; padding: 3rem; }
+.atomic-docs-outline { position: sticky; top: 96px; align-self: start; display: grid; border: 1px solid var(--color-line-strong); background: color-mix(in srgb, var(--color-void) 92%, transparent); }
+.atomic-docs-outline > span { padding: 1rem; border-bottom: 1px solid var(--color-line); color: var(--color-muted); font-family: var(--font-jetbrains); font-size: .6rem; }
+.atomic-docs-outline a { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: .5rem; padding: .75rem 1rem; border-bottom: 1px solid var(--color-line); color: var(--color-muted); font-size: .75rem; }
+.atomic-docs-outline a span { color: var(--color-cyan); font-family: var(--font-jetbrains); font-size: .58rem; }
+.atomic-docs-outline a[data-active="true"] { color: var(--color-fg); background: color-mix(in srgb, var(--color-cyan) 8%, transparent); }
+.atomic-docs-content { min-width: 0; max-width: 980px; }
+.atomic-doc-section { padding: 0 0 5rem; }
+.atomic-doc-section > header { padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-line-strong); }
+.atomic-doc-section > header span { color: var(--color-cyan); font-family: var(--font-jetbrains); font-size: .62rem; }
+.atomic-doc-section > header h2 { margin-top: .6rem; font-size: clamp(1.8rem, 4vw, 3.4rem); font-weight: 500; }
+.atomic-doc-section > header p,
+.atomic-doc-section > p { max-width: 780px; margin-top: 1.25rem; color: var(--color-muted); line-height: 1.75; }
+.atomic-lab-link { display: inline-flex; margin-top: 1.5rem; padding-bottom: .25rem; border-bottom: 1px solid var(--color-cyan); color: var(--color-cyan); font-family: var(--font-jetbrains); font-size: .68rem; }
+.atomic-principles,
+.atomic-request-steps { display: grid; gap: 0; margin: 1.5rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--color-line); }
+.atomic-principles li { display: grid; grid-template-columns: 10rem minmax(0, 1fr); gap: 1rem; padding: 1rem; border-bottom: 1px solid var(--color-line); }
+.atomic-principles strong { color: var(--color-cyan); font-family: var(--font-jetbrains); font-size: .72rem; }
+.atomic-principles span { color: var(--color-muted); }
+.atomic-package-grid,
+.atomic-error-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin-top: 1.5rem; border: 1px solid var(--color-line-strong); background: var(--color-line-strong); }
+.atomic-package-grid article,
+.atomic-error-list article { padding: 1.25rem; background: var(--color-void); }
+.atomic-package-grid strong,
+.atomic-error-list strong { color: var(--color-cyan); font-family: var(--font-jetbrains); font-size: .75rem; }
+.atomic-package-grid p,
+.atomic-error-list p { margin-top: .65rem; color: var(--color-muted); font-size: .82rem; line-height: 1.55; }
+.atomic-code-block { min-width: 0; margin: 1.5rem 0 0; border: 1px solid var(--color-line-strong); background: var(--color-void); }
+.atomic-code-block figcaption { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 42px; padding: .35rem .6rem .35rem 1rem; border-bottom: 1px solid var(--color-line); color: var(--color-muted); font-family: var(--font-jetbrains); font-size: .62rem; }
+.atomic-code-block figcaption button { border-radius: 0 !important; }
+.atomic-code-block pre { max-width: 100%; overflow-x: auto; padding: 1.2rem; }
+.atomic-code-block code { color: var(--color-fg); font-family: var(--font-jetbrains); font-size: .72rem; line-height: 1.7; }
+.atomic-warning { padding: 1rem 1.2rem; border-left: 2px solid var(--color-magenta); color: var(--color-fg) !important; background: var(--atomic-panel-strong); font-family: var(--font-jetbrains); font-size: .72rem; line-height: 1.65 !important; }
+.atomic-request-steps li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; padding: 1rem; border-bottom: 1px solid var(--color-line); }
+.atomic-request-steps li > span { color: var(--color-cyan); font-family: var(--font-jetbrains); }
+.atomic-request-steps p { color: var(--color-muted); line-height: 1.6; }
+.atomic-request-steps strong { color: var(--color-fg); }
+.atomic-table-wrap { max-width: 100%; margin-top: 1.5rem; overflow-x: auto; border: 1px solid var(--color-line-strong); }
+.atomic-table-wrap table { width: 100%; min-width: 920px; border-collapse: collapse; font-family: var(--font-jetbrains); font-size: .65rem; }
+.atomic-table-wrap th,
+.atomic-table-wrap td { padding: .85rem; border-right: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line); text-align: left; vertical-align: top; }
+.atomic-table-wrap thead th { color: var(--color-cyan); background: color-mix(in srgb, var(--color-cyan) 8%, var(--color-void)); }
+.atomic-table-wrap tbody th { color: var(--color-fg); }
+.atomic-table-wrap td { color: var(--color-muted); }
+.atomic-recipe-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.atomic-recipe-grid .atomic-code-block:first-child { grid-column: 1 / -1; }
+
+@media (max-width: 900px) {
+  .atomic-docs-layout { grid-template-columns: 1fr; padding: 1rem; }
+  .atomic-docs-outline { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .atomic-docs-outline > span { grid-column: 1 / -1; }
+}
+
+@media (max-width: 640px) {
+  .atomic-docs-outline { grid-template-columns: 1fr; }
+  .atomic-package-grid,
+  .atomic-error-list,
+  .atomic-recipe-grid { grid-template-columns: 1fr; }
+  .atomic-recipe-grid .atomic-code-block:first-child { grid-column: 1; }
+  .atomic-principles li { grid-template-columns: 1fr; }
+}

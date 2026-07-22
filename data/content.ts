@@ -70,10 +70,23 @@ export type Work = {
   year: string;
   title: string;
   href: string;
+  external?: boolean;
   tags: { label: string; live?: boolean }[];
 };
 
 export const works: Work[] = [
+  {
+    year: "2026",
+    title: "ATOMIC",
+    href: "/playground",
+    external: false,
+    tags: [
+      { label: "TYPESCRIPT" },
+      { label: "SSR STORAGE" },
+      { label: "MULTI-FRAMEWORK" },
+      { label: "PLAYGROUND", live: true },
+    ],
+  },
   {
     year: "2026",
     title: "TUNNEL.SH",

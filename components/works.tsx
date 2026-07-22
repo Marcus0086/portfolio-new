@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { works } from "@/data/content";
 import { Reveal } from "@/hooks/use-reveal";
@@ -51,15 +52,9 @@ export function Works() {
         className="border-b border-line"
         onMouseLeave={() => setHovered(null)}
       >
-        {works.map((work, index) => (
-          <Reveal key={work.title} delay={index * 100}>
-            <a
-              href={work.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseEnter={() => setHovered(index)}
-              className="group relative grid grid-cols-[1fr_auto] gap-x-4 gap-y-2.5 border-t border-line px-6 py-8 transition-colors duration-300 [grid-template-areas:'year_arrow'_'title_title'_'tags_tags'] hover:bg-fg/3 md:grid-cols-[7rem_1fr_auto_3rem] md:items-center md:gap-6 md:px-12 md:py-10 md:[grid-template-areas:'year_title_tags_arrow']"
-            >
+        {works.map((work, index) => {
+          const content = (
+            <>
               <span
                 aria-hidden
                 className="absolute top-0 bottom-0 left-0 w-0.5 origin-top scale-y-0 bg-cyan shadow-[0_0_12px_var(--color-cyan)] transition-transform duration-350 ease-house group-hover:scale-y-100"
@@ -88,11 +83,37 @@ export function Works() {
                 aria-hidden
                 className="self-center font-mono text-xl text-muted transition-[transform,color] duration-350 [grid-area:arrow] group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-cyan"
               >
-                ↗
+                {work.external === false ? "→" : "↗"}
               </span>
-            </a>
-          </Reveal>
-        ))}
+            </>
+          );
+          const className =
+            "group relative grid grid-cols-[1fr_auto] gap-x-4 gap-y-2.5 border-t border-line px-6 py-8 transition-colors duration-300 [grid-template-areas:'year_arrow'_'title_title'_'tags_tags'] hover:bg-fg/3 md:grid-cols-[7rem_1fr_auto_3rem] md:items-center md:gap-6 md:px-12 md:py-10 md:[grid-template-areas:'year_title_tags_arrow']";
+
+          return (
+            <Reveal key={work.title} delay={index * 100}>
+              {work.external === false ? (
+                <Link
+                  href={work.href}
+                  onMouseEnter={() => setHovered(index)}
+                  className={className}
+                >
+                  {content}
+                </Link>
+              ) : (
+                <a
+                  href={work.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => setHovered(index)}
+                  className={className}
+                >
+                  {content}
+                </a>
+              )}
+            </Reveal>
+          );
+        })}
       </div>
 
       {/* cursor-following dossier panel */}
@@ -111,7 +132,9 @@ export function Works() {
           {String((hovered ?? 0) + 1).padStart(2, "0")}
         </span>
         <span className="font-mono text-[9px] tracking-[0.3em] text-muted">
-          OPEN FILE ↗
+          {hovered !== null && works[hovered]?.external === false
+            ? "OPEN PLAYGROUND →"
+            : "OPEN FILE ↗"}
         </span>
       </div>
     </section>
