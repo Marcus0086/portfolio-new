@@ -29,7 +29,7 @@ test("playground exposes every runtime and framework family", () => {
     assert.match(model, new RegExp(adapter));
   }
 
-  assert.match(page, /STATIC SERVER SIMULATION/);
+  assert.match(page, /SERVER STORAGE AND BROWSER STORAGE ARE DIFFERENT/);
   assert.match(shell, /\/playground\/docs/);
   assert.match(client, /aria-pressed/);
   assert.match(client, /aria-live="polite"/);

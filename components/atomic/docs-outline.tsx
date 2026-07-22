@@ -26,7 +26,7 @@ export function DocsOutline({ items }: { items: OutlineItem[] }) {
 
   return (
     <nav className="atomic-docs-outline" aria-label="Documentation sections">
-      <span>ON THIS SIGNAL</span>
+      <span>IN THIS GUIDE</span>
       {items.map((item, index) => (
         <a key={item.id} href={`#${item.id}`} data-active={active === item.id}>
           <span>{String(index + 1).padStart(2, "0")}</span>
@@ -36,4 +36,3 @@ export function DocsOutline({ items }: { items: OutlineItem[] }) {
     </nav>
   );
 }
-

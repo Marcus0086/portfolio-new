@@ -49,15 +49,15 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 z-2 flex flex-col justify-between px-6 pt-24 pb-30 md:px-12 md:pt-28 md:pb-32"
       >
         <div className="animate-rise [animation-delay:200ms]">
-          <Eyebrow>01 — DISCIPLINE</Eyebrow>
+          <Eyebrow>FOUNDING ENGINEER / BENGALURU</Eyebrow>
           <h1 className={`animate-glitch mt-3 ${title}`}>
-            FOUNDING <em className="font-medium">ENGINEER</em>
+            RAGHAV <em className="font-medium">GUPTA</em>
           </h1>
         </div>
         <div className="animate-rise self-end text-right [animation-delay:400ms]">
-          <Eyebrow>02 — CRAFT</Eyebrow>
+          <Eyebrow>AI SYSTEMS / BACKEND / DISTRIBUTED SYSTEMS</Eyebrow>
           <h2 className={`mt-3 ${title}`}>
-            AI SYSTEMS <em className="font-medium">ARCHITECT</em>
+            I BUILD SYSTEMS THAT <em className="font-medium">HANDLE REAL LOAD</em>
           </h2>
         </div>
       </div>
@@ -71,7 +71,7 @@ export function Hero() {
             className="animate-ping-node h-1.5 w-1.5 rounded-full bg-cyan"
             aria-hidden
           />
-          INITIALIZE
+          SEE MY WORK
         </a>
         <div className="animate-fade absolute bottom-6 left-1/2 z-3 flex -translate-x-1/2 flex-col items-center gap-2.5 [animation-delay:1500ms]">
           <span className="font-mono text-[9px] tracking-[0.3em] text-muted">

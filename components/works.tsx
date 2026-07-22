@@ -41,10 +41,10 @@ export function Works() {
   return (
     <section id="works" className="relative scroll-mt-24 py-32">
       <SectionHead
-        eyebrow="06 — SELECTED WORKS"
+        eyebrow="04 / PROJECTS"
         title={
           <>
-            The <em>Distortion</em> Gallery
+            I wanted these tools, so I <em>built them</em>
           </>
         }
       />
@@ -62,8 +62,13 @@ export function Works() {
               <span className="self-center font-mono text-[11px] tracking-[0.15em] text-muted [grid-area:year]">
                 {work.year}
               </span>
-              <span className="text-[clamp(1.5rem,3.8vw,3.2rem)] leading-none font-medium transition-[transform,text-shadow] duration-350 ease-house [grid-area:title] group-hover:translate-x-4 group-hover:[text-shadow:0_0_18px_rgba(0,229,255,0.6)]">
-                {work.title}
+              <span className="flex flex-col gap-3 transition-transform duration-350 ease-house [grid-area:title] group-hover:translate-x-4">
+                <span className="text-[clamp(1.5rem,3.8vw,3.2rem)] leading-none font-medium transition-[text-shadow] duration-350 group-hover:[text-shadow:0_0_18px_rgba(0,229,255,0.6)]">
+                  {work.title}
+                </span>
+                <span className="max-w-[64ch] text-sm leading-relaxed text-muted md:text-[15px]">
+                  {work.description}
+                </span>
               </span>
               <span className="flex flex-wrap items-center gap-2 [grid-area:tags] md:justify-end">
                 {work.tags.map((tag) => (

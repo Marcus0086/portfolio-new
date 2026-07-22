@@ -55,7 +55,7 @@
     from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  /* Animates the standalone `scale` property only — the element is centered by
+  /* Animates the standalone `scale` property only. The element is centered by
      Tailwind translate utilities (the standalone `translate` property), and
      putting translate(-50%,-50%) in a `transform` keyframe would stack on top
      of it and shift the element by an extra half-size. */
@@ -90,13 +90,13 @@ body {
   color: var(--color-void);
 }
 
-/* outline ("ghost") typography — no Tailwind utility exists for text-stroke */
+/* Outline ("ghost") typography. No Tailwind utility exists for text-stroke. */
 @utility text-outline {
   color: transparent;
   -webkit-text-stroke: 1px color-mix(in srgb, var(--color-fg) 30%, transparent);
 }
 
-/* film grain — SVG fractal noise, the single most load-bearing vibe element */
+/* Film grain uses SVG fractal noise. */
 .noise-overlay {
   position: fixed;
   inset: 0;
@@ -140,7 +140,7 @@ body {
   }
 }
 
-/* Atomic runtime observatory */
+/* Atomic playground */
 .atomic-page {
   --atomic-panel: color-mix(in srgb, var(--color-void) 88%, var(--color-cyan) 12%);
   --atomic-panel-strong: color-mix(in srgb, var(--color-void) 82%, var(--color-magenta) 18%);

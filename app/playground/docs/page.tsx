@@ -6,9 +6,9 @@ import { PlaygroundShell } from "@/components/atomic/playground-shell";
 import { adapterCapabilities, docsSections } from "@/data/atomic";
 
 export const metadata: Metadata = {
-  title: "Atomic SSR Storage Documentation | Raghav Gupta",
+  title: "Atomic Docs | SSR Storage Explained",
   description:
-    "A practical guide to typed SSR storage cells, runtime capabilities, hydration, framework bindings, scoped leases, and idempotent operations.",
+    "Learn how to use cookies, localStorage, sessionStorage, request memory, and typed storage across server rendering and the browser.",
   alternates: { canonical: "/playground/docs" },
 };
 
@@ -27,14 +27,14 @@ const workspace = await server.get(workspaceCell);
 const snapshot = server.snapshot();
 const serialized = serializeStorageSnapshot(snapshot);
 
-// Browser boot: the first value is still workspace from SSR.
+// The browser starts with the value that the server rendered.
 const client = createClientStorage({ snapshot, cells });`;
 
-const nextRecipe = `// Server Component: read authority
+const nextRecipe = `// Server Components can read request cookies.
 const storage = await createNextServerStorage({ cells });
 const workspace = await storage.get(workspaceCell);
 
-// Server Action or Route Handler: response write authority
+// Server Actions and Route Handlers can write response cookies.
 const storage = await createNextActionStorage({ cells });
 await storage.set(workspaceCell, "beta", { operationId: "workspace-beta" });
 await storage.commit();`;
@@ -50,7 +50,7 @@ useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);`;
 const vueRecipe = `const storage = useStorage();
 const workspace = useCell(workspaceCell);
 
-// Nuxt plugin seeds the ref from the SSR snapshot before mount.
+// Nuxt gives Vue the server value before the page becomes interactive.
 await workspace.set("beta");`;
 
 const svelteRecipe = `const storage = getStorage();
@@ -72,8 +72,8 @@ const idempotencyRecipe = `await storage.set(statusCell, "published", {
   operationId: "publish-post-42",
 });
 
-// Same ID + same fingerprint replays the original success.
-// Same ID + another cell/action/value throws StorageIdempotencyError.`;
+// The same ID and value returns the first success.
+// The same ID with a different write throws StorageIdempotencyError.`;
 
 function DocSection({
   id,
@@ -91,12 +91,12 @@ function DocSection({
   return (
     <section id={id} className="atomic-doc-section scroll-mt-24">
       <header>
-        <span>CONTRACT / {id.toUpperCase()}</span>
+        <span>ATOMIC DOCS</span>
         <h2>{title}</h2>
         <p>{summary}</p>
       </header>
       {children}
-      {labId ? <Link className="atomic-lab-link" href={`/playground#${labId}`}>OPEN RELATED LAB →</Link> : null}
+      {labId ? <Link className="atomic-lab-link" href={`/playground#${labId}`}>TRY THIS EXAMPLE →</Link> : null}
     </section>
   );
 }
@@ -105,9 +105,9 @@ export default function AtomicDocsPage() {
   return (
     <PlaygroundShell
       active="docs"
-      eyebrow="API CONTRACT / RUNTIME SEMANTICS / FRAMEWORK RECIPES"
-      title="The boundary is the feature."
-      intro="Atomic does not pretend all storage is universal. Cells describe typed meaning, adapters advertise capabilities, and each request or browser context supplies the authority to act."
+      eyebrow="SSR STORAGE EXPLAINED FROM THE FIRST REQUEST"
+      title="The server and browser do not share storage."
+      intro="A server and a browser cannot access the same storage in the same way. The server can read request cookies. The browser can read localStorage and sessionStorage. Atomic gives both sides one typed API, then rejects operations that cannot work."
     >
       <section className="atomic-docs-layout">
         <DocsOutline items={docsSections.map(({ id, title }) => ({ id, title }))} />
@@ -115,52 +115,53 @@ export default function AtomicDocsPage() {
         <article className="atomic-docs-content">
           <DocSection {...docsSections[0]}>
             <p>
-              A cell is an immutable description of one value. It owns an ID, codec, default, adapter, migration policy,
-              TTL, and whether the value may enter a hydration snapshot. A storage instance owns runtime context,
-              decoded caches, staged effects, subscriptions, lease queues, and its operation ledger.
+              Start with one value, such as a theme, draft, or workspace ID. Atomic calls that value a cell. The cell says
+              where the value is stored, what TypeScript type it has, what to use when it is missing, and how to check data
+              read from storage.
             </p>
             <ol className="atomic-principles">
-              <li><strong>Cell</strong><span>What the value means and how bytes become a type.</span></li>
-              <li><strong>Adapter</strong><span>Where bytes live and which operations it can honestly perform.</span></li>
-              <li><strong>Context</strong><span>The current request, response, browser, or injected platform authority.</span></li>
-              <li><strong>Storage</strong><span>The composed runtime that enforces ordering, capability, and subscriptions.</span></li>
+              <li><strong>Cell</strong><span>The value you want to store, plus its type and default.</span></li>
+              <li><strong>Adapter</strong><span>The place that stores it: cookie, localStorage, sessionStorage, or request memory.</span></li>
+              <li><strong>Context</strong><span>The current server request, server response, or browser.</span></li>
+              <li><strong>Storage</strong><span>The object your code uses to get, set, remove, and subscribe to cells.</span></li>
             </ol>
           </DocSection>
 
           <DocSection {...docsSections[1]}>
             <section className="atomic-package-grid">
-              <article><strong>@ssr-storage/core</strong><p>Cells, codecs, adapters, contexts, snapshots, leases, and operation semantics. No framework dependency.</p></article>
-              <article><strong>@ssr-storage/react</strong><p>Provider, hydration script, and typed hooks backed by the core subscription contract.</p></article>
-              <article><strong>@ssr-storage/next</strong><p>Thin request and cookie helpers that separate Server Component reads from Action and Route writes.</p></article>
-              <article><strong>@ssr-storage/vue / nuxt</strong><p>Reactive bindings and Nuxt request payload integration over the same cells.</p></article>
-              <article><strong>@ssr-storage/svelte</strong><p>Svelte-readable stores and SSR context helpers without changing core semantics.</p></article>
+              <article><strong>@ssr-storage/core</strong><p>Install this everywhere. It contains cells, storage adapters, server and browser storage, validation, ordering, and safe retries.</p></article>
+              <article><strong>@ssr-storage/react</strong><p>Use this for React providers and hooks such as useCell, useCellValue, and useSetCell.</p></article>
+              <article><strong>@ssr-storage/next</strong><p>Use this to read cookies in Server Components and write them from Server Actions or Route Handlers.</p></article>
+              <article><strong>@ssr-storage/vue / nuxt</strong><p>Use these packages to turn a cell into a Vue ref and move the server value through Nuxt.</p></article>
+              <article><strong>@ssr-storage/svelte</strong><p>Use this to turn a cell into a Svelte store and pass the server value into SvelteKit.</p></article>
             </section>
           </DocSection>
 
           <DocSection {...docsSections[2]}>
             <p>
-              Codecs are the trust boundary. Stored data is untrusted until decode succeeds. Defaults handle absence;
-              migrations handle known older versions; decode errors preserve the difference between missing and corrupt data.
+              Storage contains strings, not trusted application data. A codec converts those strings into your TypeScript
+              type. If the data is broken, the codec returns a clear decode error. If the format is old, a migration can
+              upgrade it. If no value exists, the cell returns its default.
             </p>
             <CodeBlock label="shared/cells.ts" code={coreCell} />
-            <p className="atomic-warning">TTL is evaluated when a value is read. Expiry makes the value absent; it does not create a background cleanup service.</p>
+            <p className="atomic-warning">TTL is checked when you read the value. An expired value acts like a missing value. Atomic does not run a background cleanup job.</p>
           </DocSection>
 
           <DocSection {...docsSections[3]}>
             <ol className="atomic-request-steps">
-              <li><span>01</span><p><strong>Read.</strong> A server context exposes request cookies and request-local memory.</p></li>
-              <li><span>02</span><p><strong>Expose.</strong> Only cells marked for exposure enter the safe serialized snapshot.</p></li>
-              <li><span>03</span><p><strong>Hydrate.</strong> The browser starts with exactly that snapshot, preventing a first-render mismatch.</p></li>
-              <li><span>04</span><p><strong>Subscribe.</strong> Framework bindings then follow client mutations through core subscribers.</p></li>
-              <li><span>05</span><p><strong>Commit.</strong> Server cookie writes become response effects only in a context that controls the response.</p></li>
+              <li><span>01</span><p><strong>The server reads.</strong> It can read cookies from the request and values kept in request memory.</p></li>
+              <li><span>02</span><p><strong>The page includes safe values.</strong> Only cells with <code>expose: true</code> are sent to the browser.</p></li>
+              <li><span>03</span><p><strong>The browser starts with those values.</strong> The first browser render now matches the server HTML.</p></li>
+              <li><span>04</span><p><strong>The browser listens for changes.</strong> React, Vue, or Svelte updates when storage changes.</p></li>
+              <li><span>05</span><p><strong>The server writes through a response.</strong> A cookie change needs a Server Action, Route Handler, or another response-writing context.</p></li>
             </ol>
             <CodeBlock label="request-flow.ts" code={requestFlow} />
           </DocSection>
 
           <DocSection {...docsSections[4]}>
-            <section className="atomic-table-wrap" aria-label="Adapter capability matrix">
+            <section className="atomic-table-wrap" aria-label="Where each storage adapter works">
               <table>
-                <thead><tr><th>Adapter</th><th>Server read</th><th>Server write</th><th>Client read</th><th>Client write</th><th>Lifetime</th><th>SSR bridge</th></tr></thead>
+                <thead><tr><th>Storage</th><th>Server can read?</th><th>Server can write?</th><th>Browser can read?</th><th>Browser can write?</th><th>How long it lasts</th><th>Works during server rendering?</th></tr></thead>
                 <tbody>
                   {adapterCapabilities.map((adapter) => (
                     <tr key={adapter.name}>
@@ -171,27 +172,28 @@ export default function AtomicDocsPage() {
               </table>
             </section>
             <p>
-              Cookies fill the SSR gap because a request can carry them to the server and a response can carry mutations
-              back to the browser. Local and session storage cannot participate in server rendering; request memory cannot
-              survive into the browser unless its cell is deliberately exposed in a snapshot.
+              Cookies solve the server-rendering problem because the browser sends them with the request. The server can
+              read them before rendering the page. The server can also send a changed cookie in the response. localStorage
+              and sessionStorage never reach the server. Request memory never reaches the browser unless you explicitly
+              include that cell in the page data.
             </p>
           </DocSection>
 
           <DocSection {...docsSections[5]}>
             <p>
-              React needs three functions: subscribe to future writes, read the current browser snapshot, and read the
-              server snapshot. `useSyncExternalStore` is effective here because Atomic already has stable snapshots and a
-              subscription boundary. The server snapshot and first browser snapshot must be identical; reading
-              `localStorage` before hydration would break that contract.
+              React has one strict rule during hydration: the first browser value must match the value used to render the
+              server HTML. `useSyncExternalStore` supports this directly. `getServerSnapshot` returns the server value.
+              `getSnapshot` reads the current browser value. `subscribe` tells React when the value changes. Atomic keeps
+              the first two values equal, then starts listening for browser updates.
             </p>
             <CodeBlock label="react/workspace-picker.tsx" code={reactRecipe} />
           </DocSection>
 
           <DocSection {...docsSections[6]}>
             <p>
-              Framework packages translate lifecycle and request APIs; they do not redefine storage. Share cells from a
-              framework-neutral module, create one request storage per SSR request, and create one client storage for the
-              browser application root.
+              Define cells in a plain TypeScript file so the server and browser import the same definitions. Create a new
+              server storage object for every request. Create one browser storage object when the app starts. The framework
+              package only connects that storage object to the framework&apos;s state system.
             </p>
             <section className="atomic-recipe-grid">
               <CodeBlock label="next/action.ts" code={nextRecipe} />
@@ -202,36 +204,36 @@ export default function AtomicDocsPage() {
 
           <DocSection {...docsSections[7]}>
             <p>
-              Leases are scoped callbacks. Multiple reads of one cell may run together. A write waits for active readers,
-              runs exclusively, and blocks later readers once queued so the writer cannot starve. Completion, throw,
-              timeout, or abort releases the lease automatically.
+              Sometimes two parts of an app touch the same cell at the same time. Atomic lets several reads run together.
+              A write waits for those reads, runs by itself, then lets the next operation continue. Once a write is waiting,
+              newer reads wait behind it. This prevents an endless stream of reads from blocking the write forever.
             </p>
             <CodeBlock label="scoped-lease.ts" code={leaseRecipe} />
-            <p className="atomic-warning"><strong>Lease isolation is not a transaction.</strong> It does not imply multi-cell rollback, cross-process locks, or durable commit unless an adapter explicitly declares a stronger backend capability.</p>
+            <p className="atomic-warning"><strong>Lease isolation is not a transaction.</strong> If you update two cells and the second update fails, Atomic does not roll back the first one. Locks also do not cross processes unless the storage adapter explicitly supports that.</p>
           </DocSection>
 
           <DocSection {...docsSections[8]}>
             <p>
-              Idempotency is strict replay, not deduplication by name. The ledger fingerprints the cell, action, and encoded
-              value. Reusing an ID for identical work returns the original success; changing any fingerprint component is
-              an error. Scope is adapter-declared: instance-local for ordinary MVP adapters and shared-store scope for the
-              persistent memory proof adapter.
+              A network retry can send the same write twice. Add an operation ID to prevent the second write. Atomic records
+              the cell, action, and value used by the first successful operation. Sending the same ID with the same write
+              returns the first success. Sending that ID with a different cell, action, or value throws an error.
             </p>
             <CodeBlock label="idempotent-write.ts" code={idempotencyRecipe} />
           </DocSection>
 
           <DocSection {...docsSections[9]}>
             <section className="atomic-error-list">
-              <article><strong>StorageCapabilityError</strong><p>The adapter cannot perform this operation in the current runtime or response context.</p></article>
-              <article><strong>StorageDecodeError</strong><p>Stored bytes did not satisfy the cell codec or a known migration.</p></article>
-              <article><strong>StorageQuotaError</strong><p>The browser storage backend rejected a write for capacity or policy.</p></article>
-              <article><strong>StorageCommitError</strong><p>A staged server effect failed while applying to the response.</p></article>
-              <article><strong>StorageOperationTimeoutError</strong><p>A queued lease did not acquire before its deadline.</p></article>
-              <article><strong>StorageIdempotencyError</strong><p>An operation ID was reused with a different fingerprint.</p></article>
+              <article><strong>StorageCapabilityError</strong><p>You tried an operation that cannot work here, such as reading localStorage on the server.</p></article>
+              <article><strong>StorageDecodeError</strong><p>The stored data is broken or does not match the cell&apos;s codec.</p></article>
+              <article><strong>StorageQuotaError</strong><p>The browser refused a write because storage is full or blocked.</p></article>
+              <article><strong>StorageCommitError</strong><p>The server could not apply a staged cookie change to the response.</p></article>
+              <article><strong>StorageOperationTimeoutError</strong><p>A read or write waited too long for another operation to finish.</p></article>
+              <article><strong>StorageIdempotencyError</strong><p>You reused an operation ID for a different write.</p></article>
             </section>
             <p className="atomic-warning">
-              Atomic guarantees ordering only at the scope declared by the adapter. It does not turn cookies or browser
-              storage into database transactions, and it never claims distributed durability without a backend that can provide it.
+              Atomic keeps operations in order only within the scope reported by the adapter. Cookies, localStorage, and
+              sessionStorage do not become database transactions. Atomic only claims cross-process safety when the backing
+              store can actually provide it.
             </p>
           </DocSection>
         </article>
@@ -239,4 +241,3 @@ export default function AtomicDocsPage() {
     </PlaygroundShell>
   );
 }
-

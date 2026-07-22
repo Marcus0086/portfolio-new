@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { statements } from "@/data/content";
 import { SectionHead } from "./section-head";
 
-/** 300vh sticky section — statements slide horizontally with scroll progress. */
+/** Statements slide horizontally as the reader moves through the section. */
 export function Philosophy() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -38,10 +38,10 @@ export function Philosophy() {
     >
       <div className="sticky top-0 flex h-screen flex-col justify-center gap-14 overflow-hidden motion-reduce:static motion-reduce:h-auto motion-reduce:overflow-visible">
         <SectionHead
-          eyebrow="04 — PHILOSOPHY"
+          eyebrow="02 / RULES I CODE BY"
           title={
             <>
-              Stream of <em>Consciousness</em>
+              How I <em>build</em>
             </>
           }
         />

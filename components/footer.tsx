@@ -31,7 +31,7 @@ export function Footer() {
             aria-hidden
             className="mr-2.5 inline-block h-2 w-2 rounded-full border-2 border-cyan align-middle shadow-[0_0_8px_rgba(0,229,255,0.6)]"
           />
-          09 — TRANSMISSION
+          07 / CONTACT
         </p>
       </Reveal>
       <a
@@ -43,7 +43,7 @@ export function Footer() {
           className="absolute inset-0 translate-y-[101%] bg-linear-to-r from-cyan to-magenta transition-transform duration-500 ease-house group-hover:translate-y-0"
         />
         <span className="relative z-1 text-[clamp(2.2rem,7vw,6rem)] leading-[1.05] font-semibold transition-colors duration-400 group-hover:text-void">
-          Let’s <em>Collaborate</em>
+          Have a hard problem? <em>Let’s build.</em>
         </span>
         <span
           aria-hidden

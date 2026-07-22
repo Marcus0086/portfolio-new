@@ -28,10 +28,9 @@ export function LabCard({ lab, children }: LabCardProps) {
       <p className="atomic-lab-summary">{lab.summary}</p>
       <section className="atomic-lab-body">{children}</section>
       <footer className="atomic-lab-footer">
-        <span>{lab.adapter ?? "core contract"}</span>
-        <Link href={`/playground/docs#${lab.docsId}`}>READ CONTRACT →</Link>
+        <span>{lab.adapter ?? "Atomic core"}</span>
+        <Link href={`/playground/docs#${lab.docsId}`}>READ HOW IT WORKS →</Link>
       </footer>
     </article>
   );
 }
-

@@ -34,10 +34,10 @@ export function Marquee() {
   return (
     <section id="arsenal" className="scroll-mt-24 py-24">
       <SectionHead
-        eyebrow="07 — TECHNICAL ARSENAL"
+        eyebrow="05 / TOOLS"
         title={
           <>
-            Tools of <em>Extraction</em>
+            What I <em>build with</em>
           </>
         }
       />

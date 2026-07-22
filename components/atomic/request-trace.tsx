@@ -5,18 +5,18 @@ type RequestTraceProps = {
 
 export function RequestTrace({ browserValue, stagedValue }: RequestTraceProps) {
   const stages = [
-    { label: "01 / SERVER REQUEST", value: "cookie: workspace=alpha", note: "read authority" },
-    { label: "02 / SAFE SNAPSHOT", value: '{ workspace: "alpha" }', note: "serialized transfer" },
-    { label: "03 / FIRST RENDER", value: `workspace: ${browserValue}`, note: "hydration match" },
+    { label: "01 / SERVER READS COOKIE", value: "cookie: workspace=alpha", note: "available in request" },
+    { label: "02 / PAGE SENDS VALUE", value: '{ workspace: "alpha" }', note: "safe JSON" },
+    { label: "03 / BROWSER STARTS", value: `workspace: ${browserValue}`, note: "same first value" },
     {
-      label: "04 / RESPONSE EFFECT",
-      value: stagedValue ? `Set-Cookie: workspace=${stagedValue}` : "no staged mutation",
-      note: "commit authority",
+      label: "04 / SERVER WRITES COOKIE",
+      value: stagedValue ? `Set-Cookie: workspace=${stagedValue}` : "no cookie change",
+      note: "response required",
     },
   ];
 
   return (
-    <section className="atomic-trace" aria-label="SSR storage request trace">
+    <section className="atomic-trace" aria-label="How a cookie moves from the server to the browser">
       {stages.map((stage, index) => (
         <article className="atomic-trace-stage" key={stage.label}>
           <header>
@@ -30,4 +30,3 @@ export function RequestTrace({ browserValue, stagedValue }: RequestTraceProps) {
     </section>
   );
 }
-

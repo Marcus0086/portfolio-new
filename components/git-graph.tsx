@@ -15,7 +15,7 @@ type Geometry = {
 /**
  * The journey as `git log --graph --all`. Commit rows are ordinary DOM; the
  * rail is one SVG whose paths are computed from the *measured* node positions
- * (offsetTop/offsetLeft — layout values, immune to the reveal animation's
+ * (offsetTop/offsetLeft: layout values, immune to the reveal animation's
  * transforms), so lines always land exactly on the nodes at any breakpoint.
  */
 export function GitGraph() {
@@ -142,10 +142,10 @@ export function GitGraph() {
       className="scroll-mt-24 px-0 pt-32 pb-8"
     >
       <SectionHead
-        eyebrow="03 — ORIGIN"
+        eyebrow="01 / HOW I GOT HERE"
         title={
           <>
-            git log <em>--graph --all</em>
+            I kept going <em>deeper</em>
           </>
         }
       />

@@ -1,5 +1,5 @@
 // Single source of truth for all portfolio copy.
-// Commit SHAs are real — latest short SHAs from the referenced repos.
+// Commit SHAs are real. They are the latest short SHAs from the referenced repos.
 
 export const siteUrl = "https://portfolio-new.vercel.app";
 
@@ -21,30 +21,30 @@ export const commits: Commit[] = [
     msg: "before code: the transmitter",
     year: "± 2009",
     prose:
-      "Before code, there were remote-control cars — taken apart on the floor, never quite reassembled — because somewhere between the transmitter and the wheels was an invisible signal, and I needed to see it. Some kids wanted the toy. I wanted the transmitter.",
+      "I started by taking remote-control cars apart on the floor. I wanted to know how the transmitter made the wheels move. I did not always put them back together. That habit stayed. I still open systems until I understand what is actually running underneath.",
   },
   {
     sha: "1e52cd4",
     msg: "root commit: make the phone a server",
     year: "2019",
     prose:
-      "My first public repository taught an Android phone to run a full database server inside Termux — because that was the computer in my pocket. The README was rough. It worked. Twenty-nine strangers starred it: the first time something I built helped people I would never meet.",
+      "In 2019, the computer I always had was an Android phone. So I made it run phpMyAdmin and a database server inside Termux. The README was rough. The code worked. Twenty-nine people starred it. That was the first time something I built helped people I had never met.",
   },
   {
     sha: "fdecda3",
     side: true,
     branch: "college",
     msg: "sudoku api · toy db · rust regex",
-    year: "2021 — 2022",
+    year: "2021 / 2022",
     prose:
-      "College was a branch: apps built with friends, a sudoku API that still answers requests today. Then the experiments turned inward — a toy database in Go, a regex engine in Rust — the same question the RC cars asked, aimed deeper.",
+      "During college I built apps with friends and shipped a Sudoku API that still answers requests. Then I went lower. I wrote a small database in Go and a regex engine in Rust. Using a library was not enough. I wanted to know how the library worked.",
   },
   {
     sha: "9cbbaf8",
     msg: "tars: ship whisper in the browser",
     year: "2023",
     prose:
-      "Out of college, into production at Tars: rebuilt the flagship chatbot, shipped Whisper speech recognition straight into the browser. But after three years of building for the web, the work sometimes felt soulless.",
+      "After college I joined Tars. I rebuilt its main web chatbot and shipped Whisper speech recognition in the browser. This was production work with real customers. It taught me how quickly a clean component becomes a messy system once users, old APIs, and deadlines enter the room.",
   },
   {
     sha: "82ea071",
@@ -53,16 +53,16 @@ export const commits: Commit[] = [
     msg: "burst → etl: down the stack",
     year: "2024",
     prose:
-      "So — down the stack, not across it. A reverse proxy written from scratch to learn how a TCP connection becomes an HTTP request. Then containers, queues, and schedulers wired into an ETL system moving ten thousand records a second.",
+      "I wanted stronger backend fundamentals. So I built Burst, a reverse proxy in Go, to learn how a TCP connection becomes an HTTP request. Then I built a distributed ETL pipeline with containers, RabbitMQ, workers, and schedulers. It moved more than 10,000 records per second.",
   },
   {
     sha: "2e466e7",
     head: true,
     branch: "HEAD → now",
     msg: "featurely · arx · tunnel_sh",
-    year: "2025 — ∞",
+    year: "2025 / NOW",
     prose:
-      "The working tree today: days as first engineer at Featurely AI, building synthetic minds that run product research in real browsers. Nights on the distributed-systems branch — an encrypted object store in Rust, a remote desktop over WebRTC. Nothing is merged. Everything is in progress.",
+      "Today I am the founding engineer at Featurely. I build AI agents that use real browsers, the FastAPI and Celery backend that coordinates them, and the AWS systems that keep them running. Outside work I am building an encrypted object store in Rust, a WebRTC remote desktop in Go, and Atomic for SSR storage. I like hard systems. I keep building them.",
   },
 ];
 
@@ -70,6 +70,7 @@ export type Work = {
   year: string;
   title: string;
   href: string;
+  description: string;
   external?: boolean;
   tags: { label: string; live?: boolean }[];
 };
@@ -79,6 +80,7 @@ export const works: Work[] = [
     year: "2026",
     title: "ATOMIC",
     href: "/playground",
+    description: "Type-safe storage for React, Next.js, Vue, Nuxt, and Svelte. Read cookies on the server, start the browser with the same value, and keep writes in order.",
     external: false,
     tags: [
       { label: "TYPESCRIPT" },
@@ -91,6 +93,7 @@ export const works: Work[] = [
     year: "2026",
     title: "TUNNEL.SH",
     href: "https://github.com/Marcus0086/tunnel_sh",
+    description: "A self-hosted remote desktop built in Go. It uses WebRTC to stream a machine through the browser without handing the session to a third party.",
     tags: [
       { label: "GO" },
       { label: "WEBRTC" },
@@ -102,6 +105,7 @@ export const works: Work[] = [
     year: "2025",
     title: "ARX",
     href: "https://github.com/Marcus0086/arx",
+    description: "An encrypted object store written in Rust. Content-defined chunking removes duplicate data before encrypted objects are stored.",
     tags: [
       { label: "RUST" },
       { label: "ENCRYPTED OBJECT STORE" },
@@ -113,6 +117,7 @@ export const works: Work[] = [
     year: "2024",
     title: "ETL PIPELINE",
     href: "https://github.com/Marcus0086/formdata-etl_ai",
+    description: "A distributed ETL pipeline in Go with RabbitMQ, Docker, workers, and schedulers. It processes more than 10,000 records per second.",
     tags: [
       { label: "GO" },
       { label: "RABBITMQ" },
@@ -124,6 +129,7 @@ export const works: Work[] = [
     year: "2024",
     title: "BURST",
     href: "https://github.com/Marcus0086/Burst",
+    description: "A reverse proxy built from scratch in Go to understand HTTP routing, load balancing, connection handling, and failure recovery.",
     tags: [
       { label: "GO" },
       { label: "REVERSE PROXY" },
@@ -134,6 +140,7 @@ export const works: Work[] = [
     year: "2019",
     title: "PHPMYADMIN × TERMUX",
     href: "https://github.com/Marcus0086/phpMyAdmin",
+    description: "A way to run phpMyAdmin and a database server on Android through Termux. My first public repository and my first 29 stars.",
     tags: [
       { label: "FIRST REPO" },
       { label: "ANDROID" },
@@ -145,33 +152,33 @@ export const works: Work[] = [
 export type StoryBeat = { title: string; body: string };
 
 export const story = {
-  lead: "Everything I have built started with a message from a stranger.",
+  lead: "People have ideas. I like the part where the idea has to survive real users.",
   beats: [
     {
-      title: "A stranger, a Starbucks, and a dream",
-      body: "In late 2024 I left Tars with no plan, just a Reddit thread asking if anyone needed an engineer. A founder from San Francisco messaged me out of nowhere and said he wanted to build something. I was skeptical, but I gave him my number, and for two months I woke in the middle of the night to talk across timezones and build small things with him. In December we finally sat down at a Starbucks in Indiranagar, Bangalore, and sketched a dream: help product teams build products that people actually love.",
+      title: "A Reddit message became Featurely",
+      body: "In late 2024, I left Tars and posted on Reddit asking if anyone needed an engineer. A founder from San Francisco replied. For the next two months, I woke up for 3 AM calls. We built small experiments, argued about the bad ones, and kept the useful parts. In December, we met at a Starbucks in Indiranagar, Bengaluru. That is where Featurely started. The problem was easy to explain: product teams needed useful feedback before shipping. Building software that could test a product like a real person was the hard part.",
     },
     {
-      title: "Teaching software to think like a user",
-      body: "The first problem nearly broke us. We tried to turn a Figma design into a map of every path a user could take, and it fought us at every step. So I asked a different question. What if software could just try the flow itself, the way a real person would, and what if hundreds of different people, each with their own habits and frustrations, all tried it at once? That became Featurely. The first version was scrappy and beautiful to me, a lone agent fumbling through a webpage while we watched it live and held our breath. I took on Head of Engineering, hired our first engineers and interns, and lived between that Starbucks and a WeWork on Church Street, forgetting to eat, forgetting to drink, locking myself in a room until it worked.",
+      title: "We stopped mapping screens and opened a browser",
+      body: "We first tried to turn a Figma file into every path a user could take. It was the wrong fight. Designs show screens. They do not show hesitation, broken flows, slow pages, or the button a real user will ignore. So we changed the question. What if an AI agent opened the product and used it? The first version was one agent clicking through one webpage while we watched. Then I added different user goals, habits, and frustrations. The agent stopped following a fixed script and started making decisions. That became the core of Featurely.",
     },
     {
-      title: "The night I rebuilt everything to scale",
-      body: "Then it would not scale. One browser per user buckled the moment real usage arrived. I called my teammate late one night and rebuilt the entire architecture before morning, reverse-engineering open tools nobody had bothered to document and fighting cloud limits through more than thirty failed attempts, until a thousand synthetic users could explore a thousand products at the same time. When it finally held, I just sat there, wrecked and grinning.",
+      title: "The prototype worked. Production was another problem",
+      body: "People build MVPs. AI can help prototypes. But architecture? That is the heart. The blueprint of a production system. Let us take an example of real load. One browser per synthetic user worked in the demo. At 100 concurrent users, the system started choking. We needed 1,000. I called my teammate and spent the night pulling the backend apart. We fought AWS limits, reverse-engineered tools with almost no documentation, and failed more than thirty deployments. By morning, 1,000 synthetic users could explore 1,000 products at the same time. That is the work I love. Not the demo. The system that stays alive after the demo gets traffic.",
     },
     {
-      title: "What two years as a founding engineer taught me",
-      body: "Quality was the next mountain, so I read about how people think, fast and slow, and taught the system to pause and choose its next move the way a human would. I have lived every season of this company. Three generations of engineers. People I hired, guided, and had to let go. I have been messy, I have been wrong, and I stepped back from managing so I could build again, because building is the thing I love most. As a kid I took apart remote-control cars to find the invisible signal that made them move. I am still chasing that signal, only now it lives in software that watches how people move. I am the first engineer who fueled Featurely into the living codebase it is today, and I am not done.",
+      title: "I tried management. I came back to the code",
+      body: "As founding engineer, I did more than write software. I hired engineers, mentored interns, ran projects, and made hard calls when things did not work. I learned a lot. I also moved too far from the part I am best at. Building. So I stepped back from management and returned to the code. Now I work on agent behavior, distributed browser execution, backend reliability, and the infrastructure around it. I still take systems apart to understand them. The parts are just bigger now.",
     },
   ] satisfies StoryBeat[],
 };
 
 export const statements: { text: string; ghost?: boolean }[] = [
-  { text: "What is actually happening underneath?" },
-  { text: "Down the stack, not across it.", ghost: true },
-  { text: "Reliability is designed, not debugged." },
-  { text: "Take it apart until it confesses.", ghost: true },
-  { text: "Every fix earns a regression test." },
+  { text: "The demo is not the system." },
+  { text: "What breaks when real users arrive?", ghost: true },
+  { text: "Build it. Load it. Break it. Fix it." },
+  { text: "Read the source. Find the lie.", ghost: true },
+  { text: "If it fails twice, it gets a test." },
 ];
 
 export const marqueeA = [
@@ -200,22 +207,22 @@ export type TimelineEntry = { span: string; role: string; desc: string };
 
 export const timeline: TimelineEntry[] = [
   {
-    span: "NOV 2024 — PRESENT",
+    span: "NOV 2024 / PRESENT",
     role: "FEATURELY AI · FOUNDING ENGINEER",
-    desc: "First hire. Built the synthetic user-research platform end to end — census-grounded AI personas driving real browsers, the distributed FastAPI + Celery backend, and the AWS infrastructure behind them.",
+    desc: "First engineer. Built AI agents that test products in real browsers, the FastAPI and Celery backend that runs them, and the AWS infrastructure that scales them to 1,000 concurrent users.",
   },
   {
-    span: "FEB 2023 — NOV 2024",
+    span: "FEB 2023 / NOV 2024",
     role: "TARS · FULL STACK DEVELOPER",
-    desc: "Built an event-driven backend for an AI agent spanning web, WhatsApp, and Slack; led the rebuild of the primary web chatbot used across customer deployments.",
+    desc: "Built an event-driven backend for an AI agent across web, WhatsApp, and Slack. Led the rebuild of the main customer-facing chatbot.",
   },
   {
-    span: "DEC 2021 — JAN 2023",
+    span: "DEC 2021 / JAN 2023",
     role: "TARS · MERN STACK INTERN",
-    desc: "Shipped hellotars.com on Next.js with edge caching and incremental static regeneration.",
+    desc: "Built and shipped hellotars.com with Next.js, edge caching, and incremental static regeneration.",
   },
   {
-    span: "2019 — 2023",
+    span: "2019 / 2023",
     role: "CHANDIGARH UNIVERSITY",
     desc: "Bachelor of Engineering, Computer Science.",
   },

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-/** The SIGNAL spine — a fixed left rail whose cyan fill tracks scroll progress. */
+/** A fixed left rail whose cyan fill tracks scroll progress. */
 export function SignalRail() {
   const fillRef = useRef<HTMLDivElement>(null);
 

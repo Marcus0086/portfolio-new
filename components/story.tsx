@@ -2,16 +2,16 @@ import { story } from "@/data/content";
 import { SectionHead } from "./section-head";
 import { Reveal } from "@/hooks/use-reveal";
 
-/** Long-form founding story — the page's prose payload for crawlers,
+/** Long-form founding story. This is the page's prose payload for crawlers,
  *  set as a log: four beats hung on a commit rail like the git graph. */
 export function Story() {
   return (
     <section id="story" className="scroll-mt-24 py-24">
       <SectionHead
-        eyebrow="05 — SIGNAL LOG"
+        eyebrow="03 / HOW FEATURELY GOT BUILT"
         title={
           <>
-            From a Cold DM to a <em>Thousand Synthetic Users</em>
+            From Reddit post to <em>production system</em>
           </>
         }
       />

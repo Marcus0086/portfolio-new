@@ -1,9 +1,9 @@
 import { ImageResponse } from "next/og";
 
-// Required for `output: "export"` — the image is rendered once at build time.
+// Required for `output: "export"`. The image is rendered once at build time.
 export const dynamic = "force-static";
 
-export const alt = "Raghav Gupta — Founding Engineer & AI Systems Architect";
+export const alt = "Raghav Gupta, founding engineer and backend systems builder";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -52,7 +52,7 @@ export default function Image() {
             FOUNDING ENGINEER
           </div>
           <div style={{ fontSize: 40, color: "#00e5ff", letterSpacing: 4 }}>
-            AI SYSTEMS ARCHITECT
+            AI + BACKEND SYSTEMS
           </div>
         </div>
         <div

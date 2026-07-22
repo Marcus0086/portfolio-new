@@ -5,7 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useMediaQuery } from "@/hooks/use-media";
 
-// 3D simplex noise (Ashima) — same shader the RC-car kid would have wanted to
+// 3D simplex noise (Ashima). This is the shader used to deform the sphere.
 // take apart. Displaces the wireframe icosahedron; color mixes cyan → magenta
 // with displacement so the sphere reads as the page's signal source.
 const vertexShader = /* glsl */ `

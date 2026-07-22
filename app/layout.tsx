@@ -20,9 +20,9 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Raghav Gupta | Founding Engineer & AI Systems Architect",
+  title: "Raghav Gupta | Founding Engineer, AI and Backend Systems",
   description:
-    "The story of a founding engineer who built Featurely from a cold DM into an AI platform that runs a thousand synthetic user tests at once.",
+    "Raghav Gupta is a founding engineer in Bengaluru who builds AI agents, distributed backend systems, and production infrastructure with Python, FastAPI, Celery, Go, Rust, and AWS.",
   keywords: [
     "Raghav Gupta",
     "founding engineer",
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Raghav Gupta | Founding Engineer & AI Systems Architect",
+    title: "Raghav Gupta | Founding Engineer, AI and Backend Systems",
     description:
-      "From a cold DM to a thousand synthetic users: how I built Featurely from zero.",
+      "I build AI agents, distributed backends, and production infrastructure that handles real users and real load.",
     type: "profile",
     firstName: "Raghav",
     lastName: "Gupta",
@@ -56,38 +56,41 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Raghav Gupta | Founding Engineer",
+    title: "Raghav Gupta | Founding Engineer and Backend Builder",
     description:
-      "From a cold DM to a thousand synthetic users: how I built Featurely from zero.",
+      "AI agents, distributed systems, backend infrastructure, and the projects I build to understand the stack.",
   },
 };
 
-// Person schema so search engines connect the name to Featurely, the roles,
-// and the profile links. `<` is escaped per the Next.js JSON-LD guide.
-const personJsonLd = {
+// The home page is about one person, so ProfilePage wraps the Person entity.
+// `<` is escaped per the Next.js JSON-LD guide.
+const profilePageJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Raghav Gupta",
-  jobTitle: "Founding Engineer & Head of Engineering",
-  worksFor: { "@type": "Organization", name: "Featurely" },
-  url: siteUrl,
-  sameAs: [contact.linkedin, contact.github],
-  knowsAbout: [
-    "AI agents",
-    "MCP",
-    "agent skills",
-    "synthetic users",
-    "usability testing",
-    "distributed systems",
-    "FastAPI",
-    "Celery",
-    "AWS",
-    "Python",
-    "Go",
-    "Rust",
-  ],
-  description:
-    "Founding engineer who built Featurely, an AI platform that runs synthetic user tests on real browsers at scale.",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name: "Raghav Gupta",
+    jobTitle: "Founding Engineer and Backend Engineer",
+    worksFor: { "@type": "Organization", name: "Featurely" },
+    homeLocation: { "@type": "Place", name: "Bengaluru, India" },
+    url: siteUrl,
+    sameAs: [contact.linkedin, contact.github],
+    knowsAbout: [
+      "AI agents",
+      "backend engineering",
+      "distributed systems",
+      "synthetic users",
+      "browser automation",
+      "FastAPI",
+      "Celery",
+      "AWS",
+      "Python",
+      "Go",
+      "Rust",
+    ],
+    description:
+      "Founding engineer in Bengaluru who builds AI agents, distributed backends, and production infrastructure.",
+  },
 };
 
 export default function RootLayout({
@@ -105,7 +108,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+            __html: JSON.stringify(profilePageJsonLd).replace(/</g, "\\u003c"),
           }}
         />
         {children}

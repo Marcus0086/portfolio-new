@@ -21,10 +21,10 @@ const labById = Object.fromEntries(playgroundLabs.map((lab) => [lab.id, lab])) a
 const wizardSteps = ["cart", "address", "payment", "review"];
 const browserStorageEvent = "atomic-playground-storage";
 const leaseFrames = [
-  { label: "READY", readers: "idle", writer: "idle", laterRead: "idle" },
-  { label: "READS ACTIVE", readers: "read A + B", writer: "queued", laterRead: "queued" },
-  { label: "WRITE ACTIVE", readers: "released", writer: "write C", laterRead: "waiting" },
-  { label: "QUEUE DRAINED", readers: "released", writer: "committed", laterRead: "read D" },
+  { label: "NOTHING RUNNING", readers: "waiting", writer: "waiting", laterRead: "waiting" },
+  { label: "TWO READS RUN TOGETHER", readers: "read A + B", writer: "waits", laterRead: "waits" },
+  { label: "THE WRITE RUNS ALONE", readers: "finished", writer: "write C", laterRead: "waits" },
+  { label: "THE NEXT READ CAN RUN", readers: "finished", writer: "finished", laterRead: "read D" },
 ];
 
 type BrowserStorageKind = "localStorage" | "sessionStorage";
@@ -65,7 +65,7 @@ function CookieLab({ onStage }: { onStage: (value: string | null) => void }) {
   const [clientValue, setClientValue] = useState("alpha");
   const [staged, setStaged] = useState<string | null>(null);
 
-  const commit = () => {
+  const writeCookie = () => {
     const next = clientValue === "alpha" ? "beta" : "alpha";
     setClientValue(next);
     setStaged(next);
@@ -74,11 +74,11 @@ function CookieLab({ onStage }: { onStage: (value: string | null) => void }) {
 
   return (
     <LabCard lab={labById["cookie-bridge"]}>
-      <StateRow label="request read" value="alpha" />
-      <StateRow label="snapshot" value="alpha" />
-      <StateRow label="browser now" value={clientValue} tone="cyan" />
-      <StateRow label="response effect" value={staged ? `workspace=${staged}` : "none"} tone={staged ? "pink" : undefined} />
-      <Button label={`Commit ${clientValue === "alpha" ? "beta" : "alpha"}`} onClick={commit} variant="secondary" />
+      <StateRow label="server read" value="alpha" />
+      <StateRow label="page value" value="alpha" />
+      <StateRow label="browser value" value={clientValue} tone="cyan" />
+      <StateRow label="cookie to write" value={staged ? `workspace=${staged}` : "none"} tone={staged ? "pink" : undefined} />
+      <Button label={`Write ${clientValue === "alpha" ? "beta" : "alpha"} cookie`} onClick={writeCookie} variant="secondary" />
     </LabCard>
   );
 }
@@ -94,7 +94,7 @@ function LocalDraftLab() {
 
   return (
     <LabCard lab={labById["local-draft"]}>
-      <StateRow label="server" value="capability denied" tone="pink" />
+      <StateRow label="server" value="cannot use localStorage" tone="pink" />
       <label className="atomic-field">
         <span>browser draft</span>
         <textarea
@@ -104,7 +104,7 @@ function LocalDraftLab() {
           rows={5}
         />
       </label>
-      <StateRow label="stored bytes" value={String(new TextEncoder().encode(draft).length)} />
+      <StateRow label="saved size" value={`${new TextEncoder().encode(draft).length} bytes`} />
     </LabCard>
   );
 }
@@ -132,7 +132,7 @@ function RequestMemoryLab() {
   return (
     <LabCard lab={labById["request-memory"]}>
       <StateRow label="trace cell" value="req_04f2" tone="cyan" />
-      <StateRow label="client read" value="capability denied" tone="pink" />
+      <StateRow label="browser" value="cannot read request memory" tone="pink" />
       <p className="atomic-callout">The request context and its memory are discarded after the response.</p>
     </LabCard>
   );
@@ -166,7 +166,7 @@ function CodecLab() {
       const parsed = JSON.parse(raw) as { version?: unknown; density?: unknown };
       if (parsed.version !== 1 && parsed.version !== 2) return { ok: false, value: "unsupported version" };
       if (!['compact', 'comfortable', 'spacious'].includes(String(parsed.density))) return { ok: false, value: "invalid density" };
-      return { ok: true, value: parsed.version === 1 ? "migrated v1 -> v2" : "decoded v2" };
+      return { ok: true, value: parsed.version === 1 ? "old format upgraded to v2" : "valid v2 data" };
     } catch {
       return { ok: false, value: "malformed JSON" };
     }
@@ -175,7 +175,7 @@ function CodecLab() {
   return (
     <LabCard lab={labById["codec-migration"]}>
       <label className="atomic-field">
-        <span>stored envelope</span>
+        <span>stored JSON</span>
         <textarea value={raw} onChange={(event) => setRaw(event.target.value)} rows={5} spellCheck={false} />
       </label>
       <StateRow label="decode" value={result.value} tone={result.ok ? "cyan" : "pink"} />
@@ -192,12 +192,12 @@ function LeaseLab() {
     <LabCard lab={labById["lease-queue"]}>
       <p className="atomic-timeline-label">{current.label}</p>
       <ol className="atomic-lease-lanes">
-        <li><span>READERS</span><strong>{current.readers}</strong></li>
-        <li><span>WRITER</span><strong>{current.writer}</strong></li>
-        <li><span>LATER READ</span><strong>{current.laterRead}</strong></li>
+        <li><span>FIRST READS</span><strong>{current.readers}</strong></li>
+        <li><span>WRITE</span><strong>{current.writer}</strong></li>
+        <li><span>NEXT READ</span><strong>{current.laterRead}</strong></li>
       </ol>
       <Button
-        label={frame === leaseFrames.length - 1 ? "Reset sequence" : "Advance queue"}
+        label={frame === leaseFrames.length - 1 ? "Start again" : "Run next operation"}
         onClick={() => setFrame((value) => (value + 1) % leaseFrames.length)}
         variant="secondary"
       />
@@ -206,27 +206,27 @@ function LeaseLab() {
 }
 
 function IdempotencyLab() {
-  const [ledger, setLedger] = useState("empty");
+  const [firstValue, setFirstValue] = useState("none");
   const [status, setStatus] = useState("No operation recorded");
 
-  const run = (fingerprint: "alpha" | "beta") => {
-    if (ledger === "empty") {
-      setLedger(fingerprint);
-      setStatus(`op_792 committed ${fingerprint}`);
+  const run = (value: "alpha" | "beta") => {
+    if (firstValue === "none") {
+      setFirstValue(value);
+      setStatus(`Saved ${value}`);
       return;
     }
-    setStatus(ledger === fingerprint ? "same fingerprint: replayed original success" : "different fingerprint: StorageIdempotencyError");
+    setStatus(firstValue === value ? "Same write: returned the first success" : "Different write: StorageIdempotencyError");
   };
 
   return (
     <LabCard lab={labById["idempotency"]}>
       <StateRow label="operation ID" value="op_792" />
-      <StateRow label="ledger" value={ledger} />
+      <StateRow label="first value" value={firstValue} />
       <StateRow label="result" value={status} tone={status.includes("Error") ? "pink" : "cyan"} />
       <menu className="atomic-button-row">
         <Button label="Run value alpha" onClick={() => run("alpha")} variant="secondary" />
         <Button label="Run value beta" onClick={() => run("beta")} variant="secondary" />
-        <Button label="Clear ledger" onClick={() => { setLedger("empty"); setStatus("No operation recorded"); }} variant="ghost" />
+        <Button label="Clear saved operation" onClick={() => { setFirstValue("none"); setStatus("No operation recorded"); }} variant="ghost" />
       </menu>
     </LabCard>
   );
@@ -268,7 +268,7 @@ export function PlaygroundClient() {
       <RequestTrace browserValue="alpha" stagedValue={stagedCookie} />
 
       <nav className="atomic-filterbar" aria-label="Filter labs by framework">
-        <span>FRAMEWORK SIGNAL</span>
+        <span>SHOW EXAMPLES FOR</span>
         <Button label="All" aria-pressed={filter === "all"} onClick={() => chooseFilter("all", "all")} variant={filter === "all" ? "primary" : "ghost"} />
         {frameworks.map((framework) => (
           <Button
