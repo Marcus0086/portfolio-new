@@ -28,6 +28,17 @@ test("playground runs with real Atomic packages on a request-time Next server", 
   assert.doesNotMatch(client, /setStaged|fake Set-Cookie/);
 });
 
+test("Vercel deploys the dynamic Next server instead of the old static export", () => {
+  const vercel = JSON.parse(read("vercel.json"));
+  const readme = read("README.md");
+
+  assert.equal(vercel.framework, "nextjs");
+  assert.equal(vercel.buildCommand, "pnpm build");
+  assert.equal(vercel.outputDirectory, ".next");
+  assert.doesNotMatch(JSON.stringify(vercel), /"out"/);
+  assert.doesNotMatch(readme, /fully static export|static site in \.\/out|Deploy `out\/`/);
+});
+
 test("playground defines real cells, commits cookies, and hydrates the server value", () => {
   const storage = read("app/playground/storage.ts");
   const server = read("app/playground/application-server.ts");

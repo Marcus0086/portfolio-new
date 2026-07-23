@@ -7,7 +7,7 @@ playground that explains storage across server rendering and the browser.
 
 ## Stack
 
-- **Next.js 16** (App Router with a fully static export)
+- **Next.js 16** (App Router with dynamic server rendering for the Atomic playground)
 - **Tailwind CSS v4** (CSS-first `@theme` tokens)
 - **@react-three/fiber + three** for the interactive hero sphere
 - **Chakra Petch + JetBrains Mono** via `next/font`
@@ -15,18 +15,19 @@ playground that explains storage across server rendering and the browser.
 ## Develop
 
 ```sh
-bun install
-bun run dev        # http://localhost:3000
+pnpm install
+pnpm dev        # http://localhost:3000
 ```
 
 ## Build & deploy
 
 ```sh
-bun run build      # static site in ./out
+pnpm build
 ```
 
-Deploy `out/` to any static host. For Vercel: import the repo, framework preset
-"Next.js". The static export is detected automatically.
+Vercel uses the Next.js framework output. The Atomic playground needs a server
+runtime because it reads request cookies and writes response cookies through
+Server Actions.
 
 ## Where things live
 
