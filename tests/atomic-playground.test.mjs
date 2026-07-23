@@ -50,9 +50,13 @@ test("playground defines real cells, commits cookies, and hydrates the server va
   }
   assert.match(storage, /name: "atomic-application"/);
   assert.match(server, /createNextActionStorage/);
+  assert.match(server, /import \{ cookies \} from "next\/headers"/);
+  assert.match(server, /cookies: cookieFactory \?\? cookies/);
   assert.match(server, /storage\.set\(applicationIdCell, applicationId\)/);
   assert.match(server, /storage\.commit\(\)/);
+  assert.match(page, /import \{ cookies \} from "next\/headers"/);
   assert.match(page, /createNextServerStorage/);
+  assert.match(page, /createNextServerStorage\(\{ cells: applicationCells, cookies \}\)/);
   assert.match(page, /storage\.get\(applicationIdCell\)/);
   assert.match(page, /storage\.snapshot\(\)/);
   assert.match(provider, /<StorageProvider cells=\{applicationCells\} snapshot=\{snapshot\}>/);

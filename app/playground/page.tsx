@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { serializeStorageSnapshotContent } from "@ssr-storage/core";
 import { createNextServerStorage } from "@ssr-storage/next";
 import { PlaygroundShell } from "@/components/atomic/playground-shell";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PlaygroundPage() {
-  const storage = await createNextServerStorage({ cells: applicationCells });
+  const storage = await createNextServerStorage({ cells: applicationCells, cookies });
   const serverApplicationId = await storage.get(applicationIdCell);
   const generatedTrace = `REQ-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
   await storage.set(requestTraceCell, generatedTrace);

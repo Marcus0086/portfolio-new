@@ -1,4 +1,5 @@
 import { createNextActionStorage, type NextStorageOptions } from "@ssr-storage/next";
+import { cookies } from "next/headers";
 import { applicationCells, applicationIdCell } from "./storage";
 
 export async function commitApplicationCookie(
@@ -7,7 +8,7 @@ export async function commitApplicationCookie(
 ): Promise<void> {
   const storage = await createNextActionStorage({
     cells: applicationCells,
-    cookies: cookieFactory,
+    cookies: cookieFactory ?? cookies,
   });
   await storage.set(applicationIdCell, applicationId);
   await storage.commit();
