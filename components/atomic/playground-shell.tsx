@@ -16,7 +16,7 @@ export function PlaygroundShell({
   children,
 }: PlaygroundShellProps) {
   return (
-    <main className="atomic-page min-h-screen pb-24">
+    <main className={`atomic-page ${active === "docs" ? "atomic-page--docs" : ""} min-h-screen pb-24`}>
       <header className="atomic-topbar">
         <Link href="/" className="atomic-wordmark">
           <span className="atomic-signal-dot" aria-hidden />
@@ -45,4 +45,3 @@ export function PlaygroundShell({
     </main>
   );
 }
-

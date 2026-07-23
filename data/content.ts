@@ -90,18 +90,6 @@ export const works: Work[] = [
     ],
   },
   {
-    year: "2026",
-    title: "TUNNEL.SH",
-    href: "https://github.com/Marcus0086/tunnel_sh",
-    description: "A self-hosted remote desktop built in Go. It uses WebRTC to stream a machine through the browser without handing the session to a third party.",
-    tags: [
-      { label: "GO" },
-      { label: "WEBRTC" },
-      { label: "REMOTE DESKTOP" },
-      { label: "IN PROGRESS", live: true },
-    ],
-  },
-  {
     year: "2025",
     title: "ARX",
     href: "https://github.com/Marcus0086/arx",

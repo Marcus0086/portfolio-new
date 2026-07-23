@@ -13,6 +13,50 @@ test("Atomic is an internal selected work", () => {
   assert.match(content, /external: false/);
   assert.match(works, /from "next\/link"/);
   assert.match(works, /work\.external/);
+  assert.doesNotMatch(content, /title: "TUNNEL\.SH"/);
+});
+
+test("playground runs with real Atomic packages on a request-time Next server", () => {
+  const nextConfig = read("next.config.ts");
+  const packageJson = read("package.json");
+  const client = read("app/playground/playground-client.tsx");
+
+  assert.doesNotMatch(nextConfig, /output:\s*"export"/);
+  assert.match(packageJson, /"@ssr-storage\/core":\s*"file:vendor\/ssr-storage-core-0\.0\.0\.tgz"/);
+  assert.match(packageJson, /"@ssr-storage\/react":\s*"file:vendor\/ssr-storage-react-0\.0\.0\.tgz"/);
+  assert.match(packageJson, /"@ssr-storage\/next":\s*"file:vendor\/ssr-storage-next-0\.0\.0\.tgz"/);
+  assert.doesNotMatch(client, /setStaged|fake Set-Cookie/);
+});
+
+test("playground defines real cells, commits cookies, and hydrates the server value", () => {
+  const storage = read("app/playground/storage.ts");
+  const server = read("app/playground/application-server.ts");
+  const page = read("app/playground/page.tsx");
+  const provider = read("app/playground/playground-provider.tsx");
+
+  for (const adapter of ["cookie(", "localStorage(", "sessionStorage(", "requestMemory("]) {
+    assert.match(storage, new RegExp(adapter.replace("(", "\\(")));
+  }
+  assert.match(storage, /name: "atomic-application"/);
+  assert.match(server, /createNextActionStorage/);
+  assert.match(server, /storage\.set\(applicationIdCell, applicationId\)/);
+  assert.match(server, /storage\.commit\(\)/);
+  assert.match(page, /createNextServerStorage/);
+  assert.match(page, /storage\.get\(applicationIdCell\)/);
+  assert.match(page, /storage\.snapshot\(\)/);
+  assert.match(provider, /<StorageProvider cells=\{applicationCells\} snapshot=\{snapshot\}>/);
+});
+
+test("job application uses Atomic hooks and refreshes after a real server write", () => {
+  const demo = read("app/playground/application-demo.tsx");
+  const client = read("app/playground/playground-client.tsx");
+
+  assert.match(demo, /useCell\(applicationDraftCell\)/);
+  assert.match(demo, /useCell\(applicationStepCell\)/);
+  assert.match(demo, /setActiveApplication/);
+  assert.match(demo, /router\.refresh\(\)/);
+  assert.match(demo, /Clear browser draft/);
+  assert.doesNotMatch(client, /useBrowserStorage|writeBrowserStorage|setStaged|stagedCookie/);
 });
 
 test("playground exposes every runtime and framework family", () => {
@@ -29,41 +73,50 @@ test("playground exposes every runtime and framework family", () => {
     assert.match(model, new RegExp(adapter));
   }
 
-  assert.match(page, /SERVER STORAGE AND BROWSER STORAGE ARE DIFFERENT/);
+  assert.match(page, /A REAL SERVER REQUEST \/ A REAL COOKIE WRITE/);
   assert.match(shell, /\/playground\/docs/);
   assert.match(client, /aria-pressed/);
   assert.match(client, /aria-live="polite"/);
-  assert.match(client, /typeof window/);
 });
 
-test("playground includes storage, concurrency, and hydration labs", () => {
+test("playground centers one storage workflow and keeps advanced guarantee labs", () => {
   const model = read("data/atomic.ts");
+  const demo = read("app/playground/application-demo.tsx");
 
   for (const id of [
-    "cookie-bridge",
-    "local-draft",
-    "session-wizard",
-    "request-memory",
-    "layered-storage",
-    "codec-migration",
     "lease-queue",
     "idempotency",
     "react-external-store",
   ]) {
     assert.match(model, new RegExp(`id: "${id}"`));
   }
+
+  for (const removedId of [
+    "cookie-bridge",
+    "local-draft",
+    "session-wizard",
+    "request-memory",
+    "layered-storage",
+    "codec-migration",
+  ]) {
+    assert.doesNotMatch(model, new RegExp(`id: "${removedId}"`));
+  }
+
+  assert.match(demo, /id="application-demo"/);
 });
 
 test("documentation and playground share stable anchors", () => {
   const model = read("data/atomic.ts");
   const docs = read("app/playground/docs/page.tsx");
 
-  assert.match(model, /docsId: "adapters"/);
+  assert.match(model, /id: "adapters"/);
   assert.match(model, /docsId: "concurrency"/);
   assert.match(model, /docsId: "hydration"/);
   assert.match(docs, /adapterCapabilities/);
   assert.match(docs, /Lease isolation is not a transaction/);
-  assert.match(docs, /\/playground#/);
+  assert.match(model, /labId: "application-demo"/);
+  assert.match(docs, /\/playground#\$\{labId\}/);
+  assert.match(docs, /job application/i);
 });
 
 test("sitemap publishes playground and documentation routes", () => {

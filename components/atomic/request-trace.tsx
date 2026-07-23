@@ -1,18 +1,15 @@
 type RequestTraceProps = {
-  browserValue: string;
-  stagedValue: string | null;
+  serverApplicationId: string;
+  snapshotApplicationId: string;
+  requestTrace: string;
 };
 
-export function RequestTrace({ browserValue, stagedValue }: RequestTraceProps) {
+export function RequestTrace({ serverApplicationId, snapshotApplicationId, requestTrace }: RequestTraceProps) {
   const stages = [
-    { label: "01 / SERVER READS COOKIE", value: "cookie: workspace=alpha", note: "available in request" },
-    { label: "02 / PAGE SENDS VALUE", value: '{ workspace: "alpha" }', note: "safe JSON" },
-    { label: "03 / BROWSER STARTS", value: `workspace: ${browserValue}`, note: "same first value" },
-    {
-      label: "04 / SERVER WRITES COOKIE",
-      value: stagedValue ? `Set-Cookie: workspace=${stagedValue}` : "no cookie change",
-      note: "response required",
-    },
+    { label: "01 / REQUEST ARRIVES", value: `cookie: ${serverApplicationId}`, note: "server can read" },
+    { label: "02 / REQUEST MEMORY", value: requestTrace, note: "one request" },
+    { label: "03 / PAGE SENDS SNAPSHOT", value: `application: ${snapshotApplicationId}`, note: "safe JSON" },
+    { label: "04 / BROWSER STARTS", value: `application: ${snapshotApplicationId}`, note: "same first value" },
   ];
 
   return (

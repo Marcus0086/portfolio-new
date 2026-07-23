@@ -12,52 +12,67 @@ export const metadata: Metadata = {
   alternates: { canonical: "/playground/docs" },
 };
 
-const coreCell = `import { cell, literal, cookie } from "@ssr-storage/core";
+const coreCell = `import { cell, cookie, json, localStorage, string } from "@ssr-storage/core";
 
-export const workspaceCell = cell("workspace", {
-  adapter: cookie({ name: "workspace" }),
-  codec: literal("alpha", "beta"),
-  default: "alpha",
+export const applicationIdCell = cell("application-id", {
+  adapter: cookie({ name: "atomic-application", path: "/" }),
+  codec: string(),
+  default: "NEW",
   expose: true,
+});
+
+export const applicationDraftCell = cell("application-draft", {
+  adapter: localStorage({ key: "atomic:application-draft" }),
+  codec: json<{ role: string; experience: string }>(),
+  default: { role: "Backend Engineer", experience: "" },
 });`;
 
-const requestFlow = `const server = await createServerStorage({ context, cells });
-const workspace = await server.get(workspaceCell);
+const requestFlow = `const storage = await createNextServerStorage({ cells });
+const applicationId = await storage.get(applicationIdCell);
 
-const snapshot = server.snapshot();
-const serialized = serializeStorageSnapshot(snapshot);
+const snapshot = storage.snapshot();
 
-// The browser starts with the value that the server rendered.
-const client = createClientStorage({ snapshot, cells });`;
+return (
+  <StorageProvider cells={cells} snapshot={snapshot}>
+    <ApplicationForm applicationId={applicationId} />
+  </StorageProvider>
+);`;
 
-const nextRecipe = `// Server Components can read request cookies.
-const storage = await createNextServerStorage({ cells });
-const workspace = await storage.get(workspaceCell);
+const nextRecipe = `// Server Component: read the cookie from this request.
+const serverStorage = await createNextServerStorage({ cells });
+const applicationId = await serverStorage.get(applicationIdCell);
 
-// Server Actions and Route Handlers can write response cookies.
-const storage = await createNextActionStorage({ cells });
-await storage.set(workspaceCell, "beta", { operationId: "workspace-beta" });
-await storage.commit();`;
+// Server Action: put the cookie on the response.
+const actionStorage = await createNextActionStorage({ cells });
+await actionStorage.set(applicationIdCell, "APP-1001");
+await actionStorage.commit();`;
 
-const reactRecipe = `function WorkspacePicker() {
-  const [workspace, setWorkspace] = useCell(workspaceCell);
-  return <button onClick={() => setWorkspace("beta")}>{workspace}</button>;
+const reactRecipe = `function ApplicationAnswer() {
+  const [draft, setDraft] = useCell(applicationDraftCell);
+  return (
+    <textarea
+      value={draft.experience}
+      onChange={(event) =>
+        setDraft({ ...draft, experience: event.target.value })
+      }
+    />
+  );
 }
 
 // Internally the binding uses:
 useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);`;
 
 const vueRecipe = `const storage = useStorage();
-const workspace = useCell(workspaceCell);
+const draft = useCell(applicationDraftCell);
 
-// Nuxt gives Vue the server value before the page becomes interactive.
-await workspace.set("beta");`;
+// Nuxt provides the server snapshot before Vue hydrates.
+await draft.set({ ...draft.value, experience: answer });`;
 
 const svelteRecipe = `const storage = getStorage();
-const workspace = createCellStore(storage, workspaceCell);
+const draft = createCellStore(storage, applicationDraftCell);
 
-$: currentWorkspace = $workspace;
-await workspace.set("beta");`;
+$: answer = $draft.experience;
+await draft.set({ ...$draft, experience: answer });`;
 
 const leaseRecipe = `await storage.read(draftCell, async (lease) => {
   inspect(lease.get());
@@ -96,7 +111,7 @@ function DocSection({
         <p>{summary}</p>
       </header>
       {children}
-      {labId ? <Link className="atomic-lab-link" href={`/playground#${labId}`}>TRY THIS EXAMPLE →</Link> : null}
+      {labId ? <Link className="atomic-lab-link" href={`/playground#${labId}`}>OPEN THE WORKING EXAMPLE →</Link> : null}
     </section>
   );
 }
@@ -115,9 +130,10 @@ export default function AtomicDocsPage() {
         <article className="atomic-docs-content">
           <DocSection {...docsSections[0]}>
             <p>
-              Start with one value, such as a theme, draft, or workspace ID. Atomic calls that value a cell. The cell says
-              where the value is stored, what TypeScript type it has, what to use when it is missing, and how to check data
-              read from storage.
+              Take the job application in the playground. The server must know which application it is rendering. The
+              browser must save an unfinished answer. One tab must remember its own form step. The server also needs a
+              request ID that disappears after the response. These are four values with four different storage rules.
+              Atomic calls each value a cell.
             </p>
             <ol className="atomic-principles">
               <li><strong>Cell</strong><span>The value you want to store, plus its type and default.</span></li>
@@ -139,9 +155,9 @@ export default function AtomicDocsPage() {
 
           <DocSection {...docsSections[2]}>
             <p>
-              Storage contains strings, not trusted application data. A codec converts those strings into your TypeScript
-              type. If the data is broken, the codec returns a clear decode error. If the format is old, a migration can
-              upgrade it. If no value exists, the cell returns its default.
+              The application ID is a string stored in a cookie. The draft is an object stored in localStorage. The cell
+              records that rule once. Every server read, browser read, write, and framework hook then uses the same
+              TypeScript type. A codec checks data from storage before application code receives it.
             </p>
             <CodeBlock label="shared/cells.ts" code={coreCell} />
             <p className="atomic-warning">TTL is checked when you read the value. An expired value acts like a missing value. Atomic does not run a background cleanup job.</p>
@@ -149,11 +165,11 @@ export default function AtomicDocsPage() {
 
           <DocSection {...docsSections[3]}>
             <ol className="atomic-request-steps">
-              <li><span>01</span><p><strong>The server reads.</strong> It can read cookies from the request and values kept in request memory.</p></li>
-              <li><span>02</span><p><strong>The page includes safe values.</strong> Only cells with <code>expose: true</code> are sent to the browser.</p></li>
-              <li><span>03</span><p><strong>The browser starts with those values.</strong> The first browser render now matches the server HTML.</p></li>
-              <li><span>04</span><p><strong>The browser listens for changes.</strong> React, Vue, or Svelte updates when storage changes.</p></li>
-              <li><span>05</span><p><strong>The server writes through a response.</strong> A cookie change needs a Server Action, Route Handler, or another response-writing context.</p></li>
+              <li><span>01</span><p><strong>The request arrives.</strong> Next.js gives Atomic the request cookies.</p></li>
+              <li><span>02</span><p><strong>The server reads the application ID.</strong> It renders the correct application before any browser code runs.</p></li>
+              <li><span>03</span><p><strong>The page includes that value.</strong> Only cells with <code>expose: true</code> enter the snapshot.</p></li>
+              <li><span>04</span><p><strong>The browser starts with the same ID.</strong> React does not replace server HTML with a different first value.</p></li>
+              <li><span>05</span><p><strong>A Server Action changes the cookie.</strong> The next request immediately reads the new application ID.</p></li>
             </ol>
             <CodeBlock label="request-flow.ts" code={requestFlow} />
           </DocSection>
@@ -172,21 +188,22 @@ export default function AtomicDocsPage() {
               </table>
             </section>
             <p>
-              Cookies solve the server-rendering problem because the browser sends them with the request. The server can
-              read them before rendering the page. The server can also send a changed cookie in the response. localStorage
-              and sessionStorage never reach the server. Request memory never reaches the browser unless you explicitly
-              include that cell in the page data.
+              The application ID goes in a cookie because the browser sends cookies with the request. That lets the server
+              render the correct application. The unfinished answer goes in localStorage because only this browser needs
+              it and it should survive reloads. The form step goes in sessionStorage because each tab can be on a different
+              step. The request ID stays in request memory because it should exist for only one server request.
             </p>
           </DocSection>
 
           <DocSection {...docsSections[5]}>
             <p>
-              React has one strict rule during hydration: the first browser value must match the value used to render the
-              server HTML. `useSyncExternalStore` supports this directly. `getServerSnapshot` returns the server value.
-              `getSnapshot` reads the current browser value. `subscribe` tells React when the value changes. Atomic keeps
-              the first two values equal, then starts listening for browser updates.
+              React compares the first browser render with the HTML from the server. If the application ID is different,
+              the UI can flicker or hydration can fail. <code>useSyncExternalStore</code> gives React three functions:
+              <code> getServerSnapshot</code> returns the ID used by the server, <code>getSnapshot</code> returns the
+              current browser value, and <code>subscribe</code> reports later writes. Atomic provides those functions so
+              the first values match and later changes still update the component.
             </p>
-            <CodeBlock label="react/workspace-picker.tsx" code={reactRecipe} />
+            <CodeBlock label="react/application-answer.tsx" code={reactRecipe} />
           </DocSection>
 
           <DocSection {...docsSections[6]}>
@@ -226,7 +243,7 @@ export default function AtomicDocsPage() {
               <article><strong>StorageCapabilityError</strong><p>You tried an operation that cannot work here, such as reading localStorage on the server.</p></article>
               <article><strong>StorageDecodeError</strong><p>The stored data is broken or does not match the cell&apos;s codec.</p></article>
               <article><strong>StorageQuotaError</strong><p>The browser refused a write because storage is full or blocked.</p></article>
-              <article><strong>StorageCommitError</strong><p>The server could not apply a staged cookie change to the response.</p></article>
+              <article><strong>StorageCommitError</strong><p>The server could not add the cookie change to the response.</p></article>
               <article><strong>StorageOperationTimeoutError</strong><p>A read or write waited too long for another operation to finish.</p></article>
               <article><strong>StorageIdempotencyError</strong><p>You reused an operation ID for a different write.</p></article>
             </section>

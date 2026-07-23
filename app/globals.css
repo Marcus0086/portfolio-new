@@ -151,6 +151,12 @@ body {
   background-size: 44px 44px;
 }
 
+.atomic-page.atomic-page--docs {
+  background: var(--color-void);
+  background-image: none;
+  background-size: auto;
+}
+
 .atomic-topbar {
   position: sticky;
   top: 0;
@@ -198,6 +204,47 @@ body {
 .atomic-trace-stage header span:last-child { text-align: right; }
 .atomic-trace-stage strong { display: block; margin-top: 2rem; overflow-wrap: anywhere; color: var(--color-fg); font-family: var(--font-jetbrains); font-size: .75rem; font-weight: 500; }
 .atomic-trace-arrow { position: absolute; right: -9px; top: 50%; z-index: 2; display: grid; place-items: center; width: 18px; height: 18px; color: var(--color-cyan); background: var(--color-void); }
+
+.atomic-application { margin: 2rem 3rem; border: 1px solid var(--color-line-strong); background: var(--color-void); }
+.atomic-application-header { max-width: 860px; padding: 2rem; }
+.atomic-application-header > span,
+.atomic-storage-inspector > header > span,
+.atomic-confirmation,
+.atomic-client-value,
+.atomic-review-list dt,
+.atomic-storage-inspector dt,
+.atomic-storage-inspector dd span {
+  font-family: var(--font-jetbrains);
+  letter-spacing: 0;
+}
+.atomic-application-header > span,
+.atomic-storage-inspector > header > span { color: var(--color-cyan); font-size: .62rem; }
+.atomic-application-header h2 { margin-top: .65rem; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 500; }
+.atomic-application-header p { max-width: 720px; margin-top: 1rem; color: var(--color-muted); line-height: 1.65; }
+.atomic-application-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(320px, 5fr); border-top: 1px solid var(--color-line-strong); }
+.atomic-form-panel,
+.atomic-storage-inspector { min-width: 0; padding: 1.5rem; }
+.atomic-form-panel { border-right: 1px solid var(--color-line-strong); }
+.atomic-form-step { display: grid; align-content: start; gap: 1.25rem; min-height: 330px; padding-top: 1.5rem; }
+.atomic-field select,
+.atomic-field textarea { width: 100%; border: 1px solid var(--color-line-strong); border-radius: 0; padding: .8rem; color: var(--color-fg); background: var(--color-void); font-family: var(--font-jetbrains); font-size: .72rem; outline: none; }
+.atomic-field select:focus,
+.atomic-field textarea:focus { border-color: var(--color-cyan); box-shadow: 0 0 0 1px var(--color-cyan); }
+.atomic-review-list,
+.atomic-storage-inspector dl { display: grid; gap: 0; margin: 0; }
+.atomic-review-list > div,
+.atomic-storage-inspector dl > div { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line); }
+.atomic-review-list dt,
+.atomic-storage-inspector dt { color: var(--color-muted); font-size: .66rem; }
+.atomic-review-list dd,
+.atomic-storage-inspector dd { min-width: 0; overflow-wrap: anywhere; }
+.atomic-storage-inspector > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; }
+.atomic-storage-inspector > header button { flex: 0 0 auto; border-radius: 0 !important; }
+.atomic-storage-inspector dd strong { display: block; color: var(--color-fg); font-family: var(--font-jetbrains); font-size: .75rem; font-weight: 500; }
+.atomic-storage-inspector dd span { display: block; margin-top: .3rem; color: var(--color-muted); font-size: .58rem; }
+.atomic-confirmation { margin-top: 1rem; padding: .9rem; border-left: 2px solid var(--color-cyan); color: var(--color-fg); background: color-mix(in srgb, var(--color-cyan) 8%, transparent); font-size: .67rem; line-height: 1.55; }
+.atomic-client-value { margin-top: .75rem; color: var(--color-muted); font-size: .62rem; }
+.atomic-client-value strong { color: var(--color-cyan); font-weight: 500; }
 
 .atomic-filterbar { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: 2rem 3rem 1rem; padding: .7rem; border: 1px solid var(--color-line-strong); background: color-mix(in srgb, var(--color-void) 90%, transparent); }
 .atomic-filterbar > span { margin: 0 .8rem; color: var(--color-muted); font-size: .64rem; }
@@ -252,6 +299,8 @@ body {
   .atomic-trace-stage:nth-child(4) { border-top: 1px solid var(--color-line-strong); }
   .atomic-lab { grid-column: span 6; }
   .atomic-lab-wide { grid-column: span 12; }
+  .atomic-application-grid { grid-template-columns: 1fr; }
+  .atomic-form-panel { border-right: 0; border-bottom: 1px solid var(--color-line-strong); }
 }
 
 @media (max-width: 640px) {
@@ -273,6 +322,14 @@ body {
   .atomic-state-row { grid-template-columns: 6.5rem minmax(0, 1fr); }
   .atomic-stepper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .atomic-lab-footer { align-items: flex-start; flex-direction: column; }
+  .atomic-application { margin: 1rem; }
+  .atomic-application-header,
+  .atomic-form-panel,
+  .atomic-storage-inspector { padding: 1rem; }
+  .atomic-storage-inspector > header { align-items: stretch; flex-direction: column; }
+  .atomic-storage-inspector > header button { width: 100%; }
+  .atomic-review-list > div,
+  .atomic-storage-inspector dl > div { grid-template-columns: 6.5rem minmax(0, 1fr); }
 }
 
 /* Atomic documentation */

@@ -55,12 +55,18 @@ test("homepage copy names the person, role, work, and location", () => {
 test("Atomic starts with a plain problem and solution", () => {
   const playground = read("app/playground/page.tsx");
   const docs = read("app/playground/docs/page.tsx");
+  const shell = read("components/atomic/playground-shell.tsx");
+  const styles = read("app/globals.css");
 
   assert.match(playground, /Server rendering happens before browser storage exists/);
   assert.match(playground, /Atomic gives each value one typed API/);
   assert.doesNotMatch(playground, /runtime boundary|legal operations|expose the boundary/i);
   assert.match(docs, /A server and a browser cannot access the same storage in the same way/);
+  assert.match(docs, /job application/i);
   assert.doesNotMatch(docs, /typed meaning|advertise capabilities|authority to act/i);
+  assert.match(shell, /atomic-page--docs/);
+  assert.match(styles, /\.atomic-page\.atomic-page--docs\s*\{\s*background: var\(--color-void\);/);
+  assert.match(styles, /background-image: none/);
 });
 
 test("every project explains what was built", () => {
@@ -68,7 +74,7 @@ test("every project explains what was built", () => {
   const works = read("components/works.tsx");
 
   assert.match(content, /description: "Type-safe storage/);
-  assert.match(content, /description: "A self-hosted remote desktop/);
   assert.match(content, /description: "An encrypted object store/);
   assert.match(works, /work\.description/);
+  assert.doesNotMatch(content, /TUNNEL\.SH/);
 });

@@ -7,11 +7,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "pnpm test:contracts && pnpm test:unit",
+    "test:contracts": "node --test tests/*.test.mjs",
+    "test:unit": "vitest run tests/*.test.ts"
   },
   "dependencies": {
     "@astryxdesign/core": "^0.1.7",
     "@react-three/fiber": "^9.6.1",
+    "@ssr-storage/core": "file:vendor/ssr-storage-core-0.0.0.tgz",
+    "@ssr-storage/next": "file:vendor/ssr-storage-next-0.0.0.tgz",
+    "@ssr-storage/react": "file:vendor/ssr-storage-react-0.0.0.tgz",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -27,7 +33,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   },
   "ignoreScripts": [
     "sharp",

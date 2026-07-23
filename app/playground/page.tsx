@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
+import { serializeStorageSnapshotContent } from "@ssr-storage/core";
+import { createNextServerStorage } from "@ssr-storage/next";
 import { PlaygroundShell } from "@/components/atomic/playground-shell";
 import { PlaygroundClient } from "./playground-client";
+import { PlaygroundProvider } from "./playground-provider";
+import { applicationCells, applicationIdCell, requestTraceCell } from "./storage";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Atomic Playground | SSR Cookies and Browser Storage",
@@ -9,15 +15,33 @@ export const metadata: Metadata = {
   alternates: { canonical: "/playground" },
 };
 
-export default function PlaygroundPage() {
+export default async function PlaygroundPage() {
+  const storage = await createNextServerStorage({ cells: applicationCells });
+  const serverApplicationId = await storage.get(applicationIdCell);
+  const generatedTrace = `REQ-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+  await storage.set(requestTraceCell, generatedTrace);
+  const requestTrace = await storage.get(requestTraceCell);
+  const snapshot = storage.snapshot();
+
   return (
     <PlaygroundShell
       active="labs"
-      eyebrow="THE PROBLEM: SERVER STORAGE AND BROWSER STORAGE ARE DIFFERENT"
-      title="Use the same value on the server and in the browser."
-      intro="Server rendering happens before browser storage exists. Cookies can cross that gap, but localStorage and sessionStorage cannot. Atomic gives each value one typed API and tells you which reads and writes are possible. Try the examples below."
+      eyebrow="A REAL SERVER REQUEST / A REAL COOKIE WRITE"
+      title="One application. Four places to keep its state."
+      intro="Server rendering happens before browser storage exists. This form still needs an application ID on the server, a saved browser draft, a tab-specific step, and temporary request data. Atomic gives each value one typed API and rejects operations that cannot work."
     >
-      <PlaygroundClient />
+      <PlaygroundProvider snapshot={snapshot}>
+        <PlaygroundClient
+          requestTrace={requestTrace}
+          serverApplicationId={serverApplicationId}
+          snapshotApplicationId={serverApplicationId}
+        />
+      </PlaygroundProvider>
+      <script
+        id="__SSR_STORAGE__"
+        type="application/json"
+        dangerouslySetInnerHTML={{ __html: serializeStorageSnapshotContent(snapshot) }}
+      />
     </PlaygroundShell>
   );
 }

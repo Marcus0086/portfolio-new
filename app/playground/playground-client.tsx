@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@astryxdesign/core";
-import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { LabCard } from "@/components/atomic/lab-card";
 import { RequestTrace } from "@/components/atomic/request-trace";
 import {
@@ -10,6 +10,7 @@ import {
   type FrameworkId,
   type PlaygroundLab,
 } from "@/data/atomic";
+import { ApplicationDemo, type ApplicationDemoProps } from "./application-demo";
 
 type FrameworkFilter = "all" | FrameworkId;
 
@@ -18,8 +19,6 @@ const labById = Object.fromEntries(playgroundLabs.map((lab) => [lab.id, lab])) a
   PlaygroundLab
 >;
 
-const wizardSteps = ["cart", "address", "payment", "review"];
-const browserStorageEvent = "atomic-playground-storage";
 const leaseFrames = [
   { label: "NOTHING RUNNING", readers: "waiting", writer: "waiting", laterRead: "waiting" },
   { label: "TWO READS RUN TOGETHER", readers: "read A + B", writer: "waits", laterRead: "waits" },
@@ -27,160 +26,12 @@ const leaseFrames = [
   { label: "THE NEXT READ CAN RUN", readers: "finished", writer: "finished", laterRead: "read D" },
 ];
 
-type BrowserStorageKind = "localStorage" | "sessionStorage";
-
-function useBrowserStorage(kind: BrowserStorageKind, key: string, serverValue: string) {
-  const subscribe = useCallback((notify: () => void) => {
-    const onStorage = (event: Event) => {
-      if (event instanceof StorageEvent && event.key !== key) return;
-      notify();
-    };
-    window.addEventListener("storage", onStorage);
-    window.addEventListener(browserStorageEvent, onStorage);
-    return () => {
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener(browserStorageEvent, onStorage);
-    };
-  }, [key]);
-  const getSnapshot = useCallback(() => window[kind].getItem(key) ?? serverValue, [key, kind, serverValue]);
-  const getServerSnapshot = useCallback(() => serverValue, [serverValue]);
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-}
-
-function writeBrowserStorage(kind: BrowserStorageKind, key: string, value: string) {
-  window[kind].setItem(key, value);
-  window.dispatchEvent(new Event(browserStorageEvent));
-}
-
 function StateRow({ label, value, tone }: { label: string; value: string; tone?: "cyan" | "pink" }) {
   return (
     <p className="atomic-state-row" data-tone={tone}>
       <span>{label}</span>
       <strong>{value}</strong>
     </p>
-  );
-}
-
-function CookieLab({ onStage }: { onStage: (value: string | null) => void }) {
-  const [clientValue, setClientValue] = useState("alpha");
-  const [staged, setStaged] = useState<string | null>(null);
-
-  const writeCookie = () => {
-    const next = clientValue === "alpha" ? "beta" : "alpha";
-    setClientValue(next);
-    setStaged(next);
-    onStage(next);
-  };
-
-  return (
-    <LabCard lab={labById["cookie-bridge"]}>
-      <StateRow label="server read" value="alpha" />
-      <StateRow label="page value" value="alpha" />
-      <StateRow label="browser value" value={clientValue} tone="cyan" />
-      <StateRow label="cookie to write" value={staged ? `workspace=${staged}` : "none"} tone={staged ? "pink" : undefined} />
-      <Button label={`Write ${clientValue === "alpha" ? "beta" : "alpha"} cookie`} onClick={writeCookie} variant="secondary" />
-    </LabCard>
-  );
-}
-
-function LocalDraftLab() {
-  const draft = useBrowserStorage("localStorage", "atomic-playground-draft", "");
-
-  const updateDraft = (value: string) => {
-    if (typeof window !== "undefined") {
-      writeBrowserStorage("localStorage", "atomic-playground-draft", value);
-    }
-  };
-
-  return (
-    <LabCard lab={labById["local-draft"]}>
-      <StateRow label="server" value="cannot use localStorage" tone="pink" />
-      <label className="atomic-field">
-        <span>browser draft</span>
-        <textarea
-          value={draft}
-          onChange={(event) => updateDraft(event.target.value)}
-          placeholder="Write a durable browser draft..."
-          rows={5}
-        />
-      </label>
-      <StateRow label="saved size" value={`${new TextEncoder().encode(draft).length} bytes`} />
-    </LabCard>
-  );
-}
-
-function SessionWizardLab() {
-  const storedStep = Number(useBrowserStorage("sessionStorage", "atomic-playground-step", "0"));
-  const step = Number.isInteger(storedStep) && storedStep >= 0 && storedStep < wizardSteps.length ? storedStep : 0;
-
-  const advance = () => {
-    const next = (step + 1) % wizardSteps.length;
-    if (typeof window !== "undefined") writeBrowserStorage("sessionStorage", "atomic-playground-step", String(next));
-  };
-
-  return (
-    <LabCard lab={labById["session-wizard"]}>
-      <ol className="atomic-stepper" aria-label="Checkout progress">
-        {wizardSteps.map((label, index) => <li key={label} data-active={index === step}>{label}</li>)}
-      </ol>
-      <Button label="Advance step" onClick={advance} variant="secondary" />
-    </LabCard>
-  );
-}
-
-function RequestMemoryLab() {
-  return (
-    <LabCard lab={labById["request-memory"]}>
-      <StateRow label="trace cell" value="req_04f2" tone="cyan" />
-      <StateRow label="browser" value="cannot read request memory" tone="pink" />
-      <p className="atomic-callout">The request context and its memory are discarded after the response.</p>
-    </LabCard>
-  );
-}
-
-function LayeredLab() {
-  const [cookiePresent, setCookiePresent] = useState(false);
-  const resolved = cookiePresent ? "cookie / compact" : "localStorage / spacious";
-
-  return (
-    <LabCard lab={labById["layered-storage"]}>
-      <ol className="atomic-layer-list">
-        <li data-hit={cookiePresent}><span>1. cookie</span><strong>{cookiePresent ? "compact" : "miss"}</strong></li>
-        <li data-hit={!cookiePresent}><span>2. localStorage</span><strong>spacious</strong></li>
-        <li><span>3. default</span><strong>comfortable</strong></li>
-      </ol>
-      <StateRow label="resolved" value={resolved} tone="cyan" />
-      <Button
-        label={cookiePresent ? "Remove cookie layer" : "Add cookie layer"}
-        onClick={() => setCookiePresent((value) => !value)}
-        variant="secondary"
-      />
-    </LabCard>
-  );
-}
-
-function CodecLab() {
-  const [raw, setRaw] = useState('{"version":1,"density":"compact"}');
-  const result = useMemo(() => {
-    try {
-      const parsed = JSON.parse(raw) as { version?: unknown; density?: unknown };
-      if (parsed.version !== 1 && parsed.version !== 2) return { ok: false, value: "unsupported version" };
-      if (!['compact', 'comfortable', 'spacious'].includes(String(parsed.density))) return { ok: false, value: "invalid density" };
-      return { ok: true, value: parsed.version === 1 ? "old format upgraded to v2" : "valid v2 data" };
-    } catch {
-      return { ok: false, value: "malformed JSON" };
-    }
-  }, [raw]);
-
-  return (
-    <LabCard lab={labById["codec-migration"]}>
-      <label className="atomic-field">
-        <span>stored JSON</span>
-        <textarea value={raw} onChange={(event) => setRaw(event.target.value)} rows={5} spellCheck={false} />
-      </label>
-      <StateRow label="decode" value={result.value} tone={result.ok ? "cyan" : "pink"} />
-      <StateRow label="TTL" value="valid for 30 minutes" />
-    </LabCard>
   );
 }
 
@@ -219,7 +70,7 @@ function IdempotencyLab() {
   };
 
   return (
-    <LabCard lab={labById["idempotency"]}>
+    <LabCard lab={labById.idempotency}>
       <StateRow label="operation ID" value="op_792" />
       <StateRow label="first value" value={firstValue} />
       <StateRow label="result" value={status} tone={status.includes("Error") ? "pink" : "cyan"} />
@@ -234,9 +85,9 @@ function IdempotencyLab() {
 
 function FrameworkLab({ id }: { id: "react-external-store" | "vue-reactivity" | "svelte-store" }) {
   const content = {
-    "react-external-store": ["getServerSnapshot() -> alpha", "first getSnapshot() -> alpha", "subscribe() -> future writes"],
-    "vue-reactivity": ["SSR payload -> alpha", "shallowRef(alpha)", "storage.subscribe -> reactive updates"],
-    "svelte-store": ["server value -> alpha", "readable(alpha)", "storage.subscribe -> store updates"],
+    "react-external-store": ["server snapshot -> APP-1001", "first browser value -> APP-1001", "subscribe() -> later writes"],
+    "vue-reactivity": ["Nuxt payload -> APP-1001", "shallowRef(APP-1001)", "storage.subscribe -> reactive updates"],
+    "svelte-store": ["server value -> APP-1001", "readable(APP-1001)", "storage.subscribe -> store updates"],
   }[id];
 
   return (
@@ -248,9 +99,8 @@ function FrameworkLab({ id }: { id: "react-external-store" | "vue-reactivity" | 
   );
 }
 
-export function PlaygroundClient() {
+export function PlaygroundClient(props: ApplicationDemoProps) {
   const [filter, setFilter] = useState<FrameworkFilter>("all");
-  const [stagedCookie, setStagedCookie] = useState<string | null>(null);
   const [announcement, setAnnouncement] = useState("Showing all framework examples");
 
   const visible = (id: string) => {
@@ -265,10 +115,11 @@ export function PlaygroundClient() {
 
   return (
     <>
-      <RequestTrace browserValue="alpha" stagedValue={stagedCookie} />
+      <RequestTrace {...props} />
+      <ApplicationDemo {...props} />
 
-      <nav className="atomic-filterbar" aria-label="Filter labs by framework">
-        <span>SHOW EXAMPLES FOR</span>
+      <nav className="atomic-filterbar" aria-label="Filter framework examples">
+        <span>FRAMEWORK SUBSCRIPTIONS</span>
         <Button label="All" aria-pressed={filter === "all"} onClick={() => chooseFilter("all", "all")} variant={filter === "all" ? "primary" : "ghost"} />
         {frameworks.map((framework) => (
           <Button
@@ -282,13 +133,7 @@ export function PlaygroundClient() {
       </nav>
       <p className="sr-only" aria-live="polite">{announcement}</p>
 
-      <section className="atomic-masonry" aria-label="SSR Storage labs">
-        {visible("cookie-bridge") && <CookieLab onStage={setStagedCookie} />}
-        {visible("local-draft") && <LocalDraftLab />}
-        {visible("session-wizard") && <SessionWizardLab />}
-        {visible("request-memory") && <RequestMemoryLab />}
-        {visible("layered-storage") && <LayeredLab />}
-        {visible("codec-migration") && <CodecLab />}
+      <section className="atomic-masonry" aria-label="Atomic guarantees and framework examples">
         {visible("lease-queue") && <LeaseLab />}
         {visible("idempotency") && <IdempotencyLab />}
         {visible("react-external-store") && <FrameworkLab id="react-external-store" />}
